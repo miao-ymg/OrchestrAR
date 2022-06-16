@@ -24,4 +24,4 @@ add_executable(SDLTest ${SDL_SOURCES})
 # add_executable(Exercise01 ${Exercise01_SOURCES})
 
 # target_link_libraries (Exercise01 ${OpenCV_LIBS})
-target_link_libraries (SDLTest ${OpenCV_LIBS} /Users/sam/Desktop/arwork/ex01/SDL2.framework/SDL2 /Users/sam/Desktop/arwork/ex01/SDL2_mixer.framework/SDL2_mixer)
+target_link_libraries (SDLTest ${OpenCV_LIBS} /Users/sam/Desktop/arwork/OrchestrAR/SDL2.framework/SDL2 /Users/sam/Desktop/arwork/OrchestrAR/SDL2_mixer.framework/SDL2_mixer)

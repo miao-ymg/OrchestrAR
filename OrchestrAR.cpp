@@ -172,7 +172,7 @@ int main(int argc, char **args) {
 		exit(1);
 	}
 
-	Mix_Chunk* sound_synth = Mix_LoadWAV("/Users/sam/Desktop/arwork/ex01/synth130.wav");
+	Mix_Chunk* sound_synth = Mix_LoadWAV("/Users/sam/Desktop/arwork/OrchestrAR/Sounds/Melody/130_latinTrap_guitar.wav");
 	if (sound_synth == NULL) {
 		fprintf(stderr, "Unable to load WAV file: %s\n", Mix_GetError());
 	}
@@ -183,7 +183,7 @@ int main(int argc, char **args) {
 	Mix_Volume(channel_synth, 0);
 
 
-	Mix_Chunk* sound_drums = Mix_LoadWAV("/Users/sam/Desktop/arwork/ex01/drums130.wav");
+	Mix_Chunk* sound_drums = Mix_LoadWAV("/Users/sam/Desktop/arwork/OrchestrAR/Sounds/Drums/130_basicTrap_drums.wav");
 	if (sound_drums == NULL) {
 		fprintf(stderr, "Unable to load WAV file: %s\n", Mix_GetError());
 	}

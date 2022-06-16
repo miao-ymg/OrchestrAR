@@ -1,3 +1,3 @@
-/Users/sam/Desktop/arwork/ex01/build/CMakeFiles/SDLTest.dir
-/Users/sam/Desktop/arwork/ex01/build/CMakeFiles/edit_cache.dir
-/Users/sam/Desktop/arwork/ex01/build/CMakeFiles/rebuild_cache.dir
+/Users/sam/Desktop/arwork/OrchestrAR/build/CMakeFiles/SDLTest.dir
+/Users/sam/Desktop/arwork/OrchestrAR/build/CMakeFiles/edit_cache.dir
+/Users/sam/Desktop/arwork/OrchestrAR/build/CMakeFiles/rebuild_cache.dir

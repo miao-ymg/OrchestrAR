@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/sam/Desktop/arwork/ex01/OrchestrAR.cpp" "CMakeFiles/SDLTest.dir/OrchestrAR.cpp.o" "gcc" "CMakeFiles/SDLTest.dir/OrchestrAR.cpp.o.d"
+  "/Users/sam/Desktop/arwork/OrchestrAR/OrchestrAR.cpp" "CMakeFiles/SDLTest.dir/OrchestrAR.cpp.o" "gcc" "CMakeFiles/SDLTest.dir/OrchestrAR.cpp.o.d"
   )
 
 # Targets to which this target links.

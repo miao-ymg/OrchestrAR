@@ -75,10 +75,10 @@
 					"path" : "/Users/sam/Library/Frameworks/SDL2_mixer.framework/Headers"
 				},
 				{
-					"path" : "/Users/sam/Desktop/arwork/ex01/SDL2.framework"
+					"path" : "/Users/sam/Desktop/arwork/OrchestrAR/SDL2.framework"
 				},
 				{
-					"path" : "/Users/sam/Desktop/arwork/ex01/SDL2_mixer.framework"
+					"path" : "/Users/sam/Desktop/arwork/OrchestrAR/SDL2_mixer.framework"
 				},
 				{
 					"backtrace" : 5,

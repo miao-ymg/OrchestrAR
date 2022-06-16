@@ -17,7 +17,7 @@
 					"linkDirectories" : 
 					[
 						"/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib",
-						"/Users/sam/Desktop/arwork/ex01",
+						"/Users/sam/Desktop/arwork/OrchestrAR",
 						"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib"
 					],
 					"linkFrameworkDirectories" : 
@@ -52,7 +52,7 @@
 					"linkDirectories" : 
 					[
 						"/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib",
-						"/Users/sam/Desktop/arwork/ex01",
+						"/Users/sam/Desktop/arwork/OrchestrAR",
 						"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib"
 					],
 					"linkFrameworkDirectories" : 

@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/sam/Desktop/arwork/ex01/build"
+			"value" : "/Users/sam/Desktop/arwork/OrchestrAR/build"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -539,7 +539,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/sam/Desktop/arwork/ex01"
+			"value" : "/Users/sam/Desktop/arwork/OrchestrAR"
 		},
 		{
 			"name" : "CMAKE_INSTALL_NAME_TOOL",
@@ -1127,7 +1127,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "[/Users/sam/Library/Frameworks/SDL2.framework][/Users/sam/Library/Frameworks/SDL2.framework/Headers][v2.0.22()]"
+			"value" : "[/usr/local/lib/SDL2.framework][/Users/sam/Library/Frameworks/SDL2.framework/Headers][v2.0.22()]"
 		},
 		{
 			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_SDL2_mixer",
@@ -1139,7 +1139,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "[/Users/sam/Library/Frameworks/SDL2_mixer.framework][/Users/sam/Library/Frameworks/SDL2_mixer.framework/Headers][v2.0.4()]"
+			"value" : "[/usr/local/lib/SDL2_mixer.framework][/Users/sam/Library/Frameworks/SDL2_mixer.framework/Headers][v2.0.4()]"
 		},
 		{
 			"name" : "OpenCV_DIR",
@@ -1215,7 +1215,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Users/sam/Library/Frameworks/SDL2.framework"
+			"value" : "/usr/local/lib/SDL2.framework"
 		},
 		{
 			"name" : "SDL2_MIXER_INCLUDE_DIR",
@@ -1247,7 +1247,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Users/sam/Library/Frameworks/SDL2_mixer.framework"
+			"value" : "/usr/local/lib/SDL2_mixer.framework"
 		},
 		{
 			"name" : "SDL2_MIXER_NO_DEFAULT_PATH",
@@ -1323,7 +1323,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/sam/Desktop/arwork/ex01/build"
+			"value" : "/Users/sam/Desktop/arwork/OrchestrAR/build"
 		},
 		{
 			"name" : "SDLTest_IS_TOP_LEVEL",
@@ -1347,7 +1347,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/sam/Desktop/arwork/ex01"
+			"value" : "/Users/sam/Desktop/arwork/OrchestrAR"
 		}
 	],
 	"kind" : "cache",
