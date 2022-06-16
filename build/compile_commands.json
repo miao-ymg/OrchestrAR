@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/Users/sam/Desktop/arwork/ex01/build",
+  "command": "/usr/bin/clang++  -I/Users/sam/Library/Frameworks/SDL2.framework/Headers -I/Users/sam/Library/Frameworks/SDL2_mixer.framework/Headers -F/Users/sam/Desktop/arwork/ex01 -isystem /usr/local/include -isystem /usr/local/include/opencv -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -o CMakeFiles/SDLTest.dir/OrchestrAR.cpp.o -c /Users/sam/Desktop/arwork/ex01/OrchestrAR.cpp",
+  "file": "/Users/sam/Desktop/arwork/ex01/OrchestrAR.cpp"
+}
+]
