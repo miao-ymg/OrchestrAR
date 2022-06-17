@@ -1,3 +1,0 @@
-/Users/sam/Desktop/arwork/OrchestrAR/build/CMakeFiles/OrchestrAR.dir
-/Users/sam/Desktop/arwork/OrchestrAR/build/CMakeFiles/edit_cache.dir
-/Users/sam/Desktop/arwork/OrchestrAR/build/CMakeFiles/rebuild_cache.dir
