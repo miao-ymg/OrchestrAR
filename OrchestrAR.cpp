@@ -5,6 +5,9 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 
+#include "PoseEstimation.h"
+#include "PoseEstimation.cpp"
+
 
 using namespace cv;
 using namespace std;
@@ -19,22 +22,17 @@ using namespace std;
 
 #define SYNTH_PATH "" //TODO
 
+#define SYNTH_ID 1680
+#define DRUMS_ID 626
 
 
-const string projectPath = "/Users/sam/Desktop/arwork/OrchestrAR";
+const string projectPath = "C:/Users/David Stiftl/projects/AR/OrchestrAR";
 
 // --- Audio properties ---
 const int audio_rate = 22050;
 const Uint16 audio_format = AUDIO_S16SYS;
 const int audio_channels = 4;
 const int audio_buffers = 4096;
-
-// --- Marker identifiers ---
-//0690, 0272
-const array<int, 4> synth_marker = {-6, 9, 9, -6 };
-const array<int, 4> drums_marker = { -2, -3, 12, 4};
-
-
 
 // Struct holding all infos about each strip, e.g. length
 struct MyStrip {
@@ -162,9 +160,12 @@ int main(int argc, char **args) {
 	Mat frame;
 	VideoCapture cap(0);
 
-	vector<array<int, 4> > identifiers;
+	queue<vector<int>> identifierHistory;
 
 	const string streamWindow = "Stream";
+
+	int capResHeight = 240;
+	int capResWidth = 320;
 
 	if (!cap.isOpened()) {
 		cout << "No webcam, using video file" << endl;
@@ -174,6 +175,14 @@ int main(int argc, char **args) {
 			exit(0);
 			return -1;
 		}
+	}
+	else {
+		//get camera resolution
+		capResHeight = cap.get(CV_CAP_PROP_FRAME_HEIGHT);
+		capResWidth = cap.get(CV_CAP_PROP_FRAME_WIDTH);
+
+		cout << "res width: " << capResWidth << endl;
+		cout << "res height: " << capResHeight << endl;
 	}
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
@@ -250,7 +259,9 @@ int main(int argc, char **args) {
 
 	Mat imgFiltered;
 
-	while (cap.read(frame)) {
+		while (cap.read(frame)) {
+
+		vector<int> identifiers;
 
 		// --- Process Frame ---
 
@@ -524,24 +535,22 @@ int main(int argc, char **args) {
 					// Added in Sheet 3 - Ex7 (c) End *****************************************************************
 				}
 
-				//Sheet 4 - Ex9 (a) Start
+				// Added in sheet 4 Ex9(a) - Start * ****************************************************************
 
-				//We now have the array of exact edge centers stored in "points", every row has 2 values x and y
+				// We now have the array of exact edge centers stored in "points", every row has two values -> 2 channels!
 				Mat highIntensityPoints(Size(1, 6), CV_32FC2, edgePointCenters);
 
-				//fitLine stores the calculated line in lineParams per column in the following way:
+				// fitLine stores the calculated line in lineParams per column in the following way:
 				// vec.x, vec.y, point.x, point.y
 				// Norm 2, 0 and 0.01 -> Optimal parameters
 				// i -> Edge points
 				fitLine(highIntensityPoints, lineParamsMat.col(i), CV_DIST_L2, 0, 0.01, 0.01);
-				
-				//need 2 points to draw the line
+				// We need two points to draw the line
 				Point p1;
-
-				//Jump through the 4x4 matrix
-				//d = -50 is the scalar -> Length of the line, g: Point + d*Vector
-				//p1 <-----Middle----->p2
-				//<-----100------>
+				// We have to jump through the 4x4 matrix, meaning the next value for the wanted line is in the next row -> +4
+				// d = -50 is the scalar -> Length of the line, g: Point + d*Vector
+				// p1<----Middle---->p2
+				//   <-----100----->
 				p1.x = (int)lineParams[8 + i] - (int)(50.0 * lineParams[i]);
 				p1.y = (int)lineParams[12 + i] - (int)(50.0 * lineParams[4 + i]);
 
@@ -549,156 +558,293 @@ int main(int argc, char **args) {
 				p2.x = (int)lineParams[8 + i] + (int)(50.0 * lineParams[i]);
 				p2.y = (int)lineParams[12 + i] + (int)(50.0 * lineParams[4 + i]);
 
-				//Draw line
+				// Draw line
 				line(imgFiltered, p1, p2, CV_RGB(0, 255, 255), 1, 8, 0);
 
-				//Sheet 4 - Ex9 (a) End
-
+				// Added in sheet 4 Ex9 (a)- End *******************************************************************
 			}
 
-			// Sheet 4 - Ex9 (b) Start -----------------------------
-			//calculate corners from edge lines
+			// Added in sheet 4 Ex9 (b)- Start *****************************************************************
+
+			// So far we stored the exact line parameters and show the lines in the image now we have to calculate the exact corners
 			Point2f corners[4];
 
-			//calculate intersection points of both lines
-			for (int i = 0; i < 4; i++) {
-				//Go through the corners of the rectangle, 3 -> 0
+			// Calculate the intersection points of both lines
+			for (int i = 0; i < 4; ++i) {
+				// Go through the corners of the rectangle, 3 -> 0
 				int j = (i + 1) % 4;
 
 				double x0, x1, y0, y1, u0, u1, v0, v1;
 
-				//Jump through 4x4 again
-				//g: Point + d*Vector
-				//g1 = (x0,y0) + scalar0*(u0,v0) == g2 = (x1, y1) + scalar1*(u1,v1)
+				// We have to jump through the 4x4 matrix, meaning the next value for the wanted line is in the next row -> +4
+				// g: Point + d*Vector
+				// g1 = (x0,y0) + scalar0*(u0,v0) == g2 = (x1,y1) + scalar1*(u1,v1)
 				x0 = lineParams[i + 8]; y0 = lineParams[i + 12];
 				x1 = lineParams[j + 8]; y1 = lineParams[j + 12];
 
-				//Direction vector
+				// Direction vector
 				u0 = lineParams[i]; v0 = lineParams[i + 4];
 				u1 = lineParams[j]; v1 = lineParams[j + 4];
 
-				//Cramer's rule, see tutorial
-				//2 unknown a, b -> Equation system
+				// (x|y) = p + s * vec --> Vector Equation
+
+				// (x|y) = p + (Ds / D) * vec
+
+				// p0.x = x0; p0.y = y0; vec0.x= u0; vec0.y=v0;
+					// p0 + s0 * vec0 = p1 + s1 * vec1
+					// p0-p1 = vec(-vec0 vec1) * vec(s0 s1)	
+
+					// s0 = Ds0 / D (see cramer's rule)
+					// s1 = Ds1 / D (see cramer's rule)   
+					// Ds0 = -(x0-x1)v1 + (y0-y1)u1 --> You need to just calculate one, here Ds0
+
+				// (x|y) = (p * D / D) + (Ds * vec / D)
+				// (x|y) = (p * D + Ds * vec) / D
+
+					// x0 * D + Ds0 * u0 / D    or   x1 * D + Ds1 * u1 / D     --> a / D
+					// y0 * D + Ds0 * v0 / D    or   y1 * D + Ds1 * v1 / D     --> b / D						   		
+
+				// (x|y) = a / c;
+
+				// Cramer's rule
+				// 2 unknown a,b -> Equation system
 				double a = x1 * u0 * v1 - y1 * u0 * u1 - x0 * u1 * v0 + y0 * u0 * u1;
 				double b = -x0 * v0 * v1 + y0 * u0 * v1 + x1 * v0 * v1 - y1 * v0 * u1;
 
-				//Calculate the cross product to check if both direction vectors are parallel -> = 0
-				// c -> Determinant = 0 -> linear dependent -> direction vectors are parallel -> No division
+				// Calculate the cross product to check if both direction vectors are parallel -> = 0
+				// c -> Determinant = 0 -> linear dependent -> the direction vectors are parallel -> No division with 0
 				double c = v1 * u0 - v0 * u1;
 				if (fabs(c) < 0.001) {
-					cout << "lines parallel" << endl;
+					std::cout << "lines parallel" << std::endl;
 					continue;
 				}
 
-				//vectors not parallel -> Cramer's rule, divide through the main determinant
+				// We have checked for parallelism of the direction vectors
+				// -> Cramer's rule, now divide through the main determinant
 				a /= c;
 				b /= c;
 
-				//Exact corner
+				// Exact corner
 				corners[i].x = a;
 				corners[i].y = b;
 
-				// Sheet 4 - Ex9 (b) End -------------------------------------------------
-
-				// Sheet 4 - Ex9 (c) Start -------------------------------------------------
+				// Added in sheet 4 Ex9 (b)- End *******************************************************************
 
 				Point p;
 				p.x = (int)corners[i].x;
 				p.y = (int)corners[i].y;
 
-				//draw corner point
+				// Added in sheet 4 Ex9 (c)- Start *****************************************************************
+
 				circle(imgFiltered, p, 5, CV_RGB(255, 255, 0), -1);
 
-				// Sheet 4 - Ex9 (c) End -------------------------------------------------
+				// Added in sheet 4 Ex9 (c)- End *******************************************************************
 
-			} //exact corners extracted
+			} // End of the loop to extract the exact corners
 
-			//Sheet 4 - Ex10 (a) Start --------------------------------
+			// Added in sheet 4 Ex10 (a)- Start *****************************************************************
 
+			// Coordinates on the original marker images to go to the actual center of the first pixel -> 6x6
 			Point2f targetCorners[4];
 			targetCorners[0].x = -0.5; targetCorners[0].y = -0.5;
 			targetCorners[1].x = 5.5; targetCorners[1].y = -0.5;
 			targetCorners[2].x = 5.5; targetCorners[2].y = 5.5;
 			targetCorners[3].x = -0.5; targetCorners[3].y = 5.5;
 
-			Mat warpMat = getPerspectiveTransform(corners, targetCorners);
+			// Create and calculate the matrix of perspective transform -> non-affine -> parallel stays not parallel
+			// Homography is a matrix to describe the transformation from an image region to the 2D projected image
+			Mat homographyMatrix(Size(3, 3), CV_32FC1);
+			// Corner which we calculated and our target Mat, find the transformation
+			homographyMatrix = getPerspectiveTransform(corners, targetCorners);
 
-			//Sheet 4 - Ex10 (a) End --------------------
+			// Added in sheet 4 Ex10 (a)- End *******************************************************************
 
-			//Sheet 4 - Ex10 (b) Start --------------------
-			Mat warped(Size(6, 6), CV_32FC2, Scalar::all(0));
-			warpPerspective(grayScale, warped, warpMat, Size(6, 6),1,1, Scalar::all(1));
+			// Added in sheet 4 Ex10 (b)- Start *****************************************************************
 
-			//Sheet 4 - Ex10 (b) End --------------------
+			// Create image for the marker
+			Mat imageMarker(Size(6, 6), CV_8UC1);
 
-			//Sheet 4- Ex10 (c) Start ---------------
-			//discard markers w/o black border and generate identifier
-			bool discard = false;
+			// Change the perspective in the marker image using the previously calculated Homography Matrix
+			// In the Homography Matrix there is also the position in the image saved
+			warpPerspective(grayScale, imageMarker, homographyMatrix, Size(6, 6));
 
-			vector<array<int, 4> > rotationIds;
-			array<int, 4> inverseIdentifier; //looking for white tiles, later we invert the result
-			for (int i = 0; i < 4; i++) inverseIdentifier[i] = 0;
+			// Added in sheet 4 Ex10 (b)- End *******************************************************************
 
-			double angle = 90;
-			for (int i = 0; i < 4; i++) {
-				//rotate by 90� four times to find all possible ids of this marker
-				Point2f center((warped.cols - 1) / 2.0, (warped.rows - 1) / 2.0);
-				// get the center coordinates of the image to create the 2D rotation matrix
-				
-				// using getRotationMatrix2D() to get the rotation matrix
-				Mat rotation_matix = getRotationMatrix2D(center, angle, 1.0);
-				//rotate marker image using mark affine
-				warpAffine(warped, warped, rotation_matix, warped.size());
+			// Now we have a B/W image of a supposed Marker
+			threshold(imageMarker, imageMarker, bw_thresh, 255, CV_THRESH_BINARY);
 
+			// Added in sheet 4 Ex10 (c)- Start *****************************************************************
 
-				vector<Point> nonZeroLocations;
-				findNonZero(warped, nonZeroLocations);
+			int code = 0;
+			for (int i = 0; i < 6; ++i) {
+				// Check if border is black
+				int pixel1 = imageMarker.at<uchar>(0, i); //top
+				int pixel2 = imageMarker.at<uchar>(5, i); //bottom
+				int pixel3 = imageMarker.at<uchar>(i, 0); //left
+				int pixel4 = imageMarker.at<uchar>(i, 5); //right
 
-				if (nonZeroLocations.size() == 0) continue; //discard all black
-
-				for (int i = 0; i < nonZeroLocations.size(); i++) {
-					int x = (int)nonZeroLocations[i].x;
-					int y = (int)nonZeroLocations[i].y;
-					if (y == 0 || y == 5 || x == 0 || x == 5) {
-						discard = true;
-						break;
-					}
-					//interior point, used for identifier
-					inverseIdentifier[y - 1] += pow(2, (4 - x));
+				// 0 -> black
+				if ((pixel1 > 0) || (pixel2 > 0) || (pixel3 > 0) || (pixel4 > 0)) {
+					code = -1;
+					break;
 				}
-				if (discard) continue;
-
-				//invert the identifier and add to the ones we found
-				for (int i = 0; i < inverseIdentifier.size(); i++) {
-					inverseIdentifier[i] = 15 - inverseIdentifier[i];
-				}
-				rotationIds.push_back(inverseIdentifier);
 			}
 
-			//canonical id of marker will be minimal
-			array<int, 4> identifier = getCanonicalId(rotationIds);
+			if (code < 0) {
+				continue;
+			}
 
-			identifiers.push_back(identifier);
-			
-			//slow way to remove duplicate ids found
-			sort(identifiers.begin(), identifiers.end());
-			auto last = unique(identifiers.begin(), identifiers.end());
-			identifiers.erase(last, identifiers.end());
+			// Copy the BW values into cP -> codePixel on the marker 4x4 (inner part of the marker, no black border)
+			int cP[4][4];
+			for (int i = 0; i < 4; ++i) {
+				for (int j = 0; j < 4; ++j) {
+					// +1 -> no borders!
+					cP[i][j] = imageMarker.at<uchar>(i + 1, j + 1);
+					// If black then 1 else 0
+					cP[i][j] = (cP[i][j] == 0) ? 1 : 0;
+				}
+			}
 
-			//Sheet 4 - Ex10 (c) End -------------------
+			// Save the ID of the marker, for each side
+			int codes[4];
+			codes[0] = codes[1] = codes[2] = codes[3] = 0;
 
-			imshow(markerWindow, warped);
+			// Calculate the code from all sides in one loop
+			for (int i = 0; i < 16; i++) {
+				// /4 to go through the rows
+				int row = i >> 2;
+				int col = i % 4;
+
+				// Multiplied by 2 to check for black values -> 0*2 = 0
+				codes[0] <<= 1;
+				codes[0] |= cP[row][col]; // 0°
+
+				// 4x4 structure -> Each column represents one side 
+				codes[1] <<= 1;
+				codes[1] |= cP[3 - col][row]; // 90°
+
+				codes[2] <<= 1;
+				codes[2] |= cP[3 - row][3 - col]; // 180°
+
+				codes[3] <<= 1;
+				codes[3] |= cP[col][3 - row]; // 270°
+
+				/*cout << "iteration: " << dec << i << endl;
+				cout << "Code 0: " << hex << codes[0] << endl;
+				cout << "Code 1: " << hex << codes[1] << endl;
+				cout << "Code 2: " << hex << codes[2] << endl;
+				cout << "Code 3: " << hex << codes[3] << endl;*/
+			}
+
+			// Account for symmetry -> One side complete white or black
+			if ((codes[0] == 0) || (codes[0] == 0xffff)) {
+				continue;
+			}
+
+			// Added in Exercise 5 - Start *****************************************************************
+
+			int angle = 0;
+
+			// Added in Exercise 5 - End *******************************************************************
+
+			// Search for the smallest marker ID
+			code = codes[0];
+			for (int i = 1; i < 4; ++i) {
+				if (codes[i] < code) {
+					code = codes[i];
+
+					// Added in Exercise 5 - Start *****************************************************************
+
+					angle = i;
+
+					// Added in Exercise 5 - End *******************************************************************
+				}
+			}
+
+			// Print ID
+			//printf("Found: %04x\n", code);
+
+			identifiers.push_back(code);
+
+			// Show the first detected marker in the image
+			if (isFirstMarker) {
+				imshow(kWinName4, imageMarker);
+				isFirstMarker = false;
+			}
+
+			// Added in sheet 4 Ex10 (c)- End *****************************************************************
+
+			// Added in sheet 4 - End *******************************************************************
+
+			// Added in Exercise 5 - Start *****************************************************************
+
+			// Correct the order of the corners, if 0 -> already have the 0 degree position
+			/* TASK: How to make sure, that we always have the correct order? */
+			if (angle != 0) {
+				Point2f corrected_corners[4];
+				// Smallest id represents the x-axis, we put the values in the corrected_corners array
+				for (int i = 0; i < 4; i++)	corrected_corners[(i + angle) % 4] = corners[i];
+				// We put the values back in the array in the sorted order
+				for (int i = 0; i < 4; i++)	corners[i] = corrected_corners[i];
+			}
+
+			// Normally we should do a camera calibration to get the camera paramters such as focal length
+			// Two ways: Inner parameters, e.g. focal length (intrinsic parameters); camera with 6 dof (R|T) (extrinsic parameters)
+			// Transfer screen coords to camera coords -> To get to the principal point
+			for (int i = 0; i < 4; i++) {
+				// TODO Here you have to use your own camera resolution (x) * 0.5
+				corners[i].x -= capResWidth * 0.5;
+				// -(corners.y) -> is needed because y is inverted
+				// TODO Here you have to use your own camera resolution (y) * 0.5
+				corners[i].y = -corners[i].y + capResHeight * 0.5;
+			}
+
+			// 4x4 -> Rotation | Translation
+			//        0  0  0  | 1 -> (Homogene coordinates to combine rotation, translation and scaling)
+			float resultMatrix[16];
+			// TODO Marker size in meters!
+			estimateSquarePose(resultMatrix, (Point2f*)corners, (double) 0.04346);
+
+			// This part is only for printing
+			/*
+			for (int i = 0; i < 4; ++i) {
+				for (int j = 0; j < 4; ++j) {
+					cout << setw(6); // Total 6
+					cout << setprecision(4); // Numbers of decimal places = 4 (of the 6)
+					// Again we are going through a matrix which is saved as an array
+					cout << resultMatrix[4 * i + j] << " ";
+				}
+				cout << "\n";
+			}
+			cout << "\n";
+
+			*/
+			float x, y, z;
+			// Translation values in the transformation matrix to calculate the distance between the marker and the camera
+			x = resultMatrix[3];
+			y = resultMatrix[7];
+			z = resultMatrix[11];
+			// Euclidian distance
+			//TODO check distance, will likely be too short
+			//cout << "length: " << sqrt(x * x + y * y + z * z) << "\n";
+			//cout << "\n";
+
+			// Added in Exercise 5 - End *****************************************************************
+
+			// -----------------------------
+
+			// -----------------------------
 		}
 
 		// --- Check if markers are present ---
 		
-		if (find(identifiers.begin(), identifiers.end(), synth_marker) != identifiers.end()) {
+		if (find(identifiers.begin(), identifiers.end(), SYNTH_ID) != identifiers.end()) {
 			Mix_Volume(channel_synth, 128);
 		} else {
 			Mix_Volume(channel_synth, 0);
 		}
 
-		if (find(identifiers.begin(), identifiers.end(), drums_marker) != identifiers.end()) {
+		if (find(identifiers.begin(), identifiers.end(), DRUMS_ID) != identifiers.end()) {
 			Mix_Volume(channel_drums, 128);
 		} else {
 			Mix_Volume(channel_drums, 0);
@@ -715,13 +861,6 @@ int main(int argc, char **args) {
 		int pressedKey = waitKey(10);
 		if (pressedKey == 27) {
 			//end program
-			for (array<int, 4> id : identifiers) {
-				cout << "identifier: (";
-				for (int i = 0; i < 4; i++) {
-					cout << id[i] << ",";
-				}
-				cout << ")" << endl;
-			}
 			break;
 		}
 		else if (pressedKey == 32) {
