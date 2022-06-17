@@ -8,6 +8,8 @@
 #include "PoseEstimation.h"
 #include "PoseEstimation.cpp"
 
+#include "ownlib.h"
+
 
 using namespace cv;
 using namespace std;
@@ -20,19 +22,15 @@ using namespace std;
 
 #define THICKNESS_VALUE 4
 
-#define SYNTH_PATH "" //TODO
 
-#define SYNTH_ID 1680
-#define DRUMS_ID 626
-
-
-const string projectPath = "C:/Users/David Stiftl/projects/AR/OrchestrAR";
 
 // --- Audio properties ---
 const int audio_rate = 22050;
 const Uint16 audio_format = AUDIO_S16SYS;
 const int audio_channels = 4;
 const int audio_buffers = 4096;
+
+
 
 // Struct holding all infos about each strip, e.g. length
 struct MyStrip {
@@ -58,8 +56,7 @@ Mat videoStreamFrameGray;
 Mat videoStreamFrameOutput;
 
 const string stripWindow = "Strip Window";
-
-const std::string kWinName4 = "Exercise 4 - Marker";
+const string kWinName4 = "Exercise 4 - Marker";
 
 // Added in sheet 4 - Start *****************************************************************
 
@@ -160,7 +157,15 @@ int main(int argc, char **args) {
 	Mat frame;
 	VideoCapture cap(0);
 
-	queue<vector<int>> identifierHistory;
+	queue<vector<int> > identifierHistory;
+
+
+	vector<Instrument> instruments;
+
+	// --- Add instrument markers
+	instruments.push_back(Instrument(1680, "../Sounds/Melody/130_latinTrap_guitar.wav"));
+	instruments.push_back(Instrument(626, "../Sounds/Drums/130_basicTrap_drums.wav"));
+
 
 	const string streamWindow = "Stream";
 
@@ -194,32 +199,11 @@ int main(int argc, char **args) {
 		exit(1);
 	}
 
-	// --- Load melody ---
-	const string melodyPath = "/Sounds/Melody/130_latinTrap_guitar.wav";
-	Mix_Chunk* sound_synth = Mix_LoadWAV((projectPath + melodyPath).c_str());
 
-	if (sound_synth == NULL) {
-		fprintf(stderr, "Unable to load WAV file: %s\n", Mix_GetError());
+	// --- Load sound files ---
+	for (Instrument& instr : instruments) {
+		instr.loadSound();
 	}
-	int channel_synth = Mix_PlayChannel(-1, sound_synth, 0);
-	if (channel_synth == -1) {
-		fprintf(stderr, "Unable to play WAV file: %s\n", Mix_GetError());
-	}
-	Mix_Volume(channel_synth, 0);
-
-
-	// --- Load drums ---
-	const string drumsPath = "/Sounds/Drums/130_basicTrap_drums.wav";
-	Mix_Chunk* sound_drums = Mix_LoadWAV((projectPath + drumsPath).c_str());
-
-	if (sound_drums == NULL) {
-		fprintf(stderr, "Unable to load WAV file: %s\n", Mix_GetError());
-	}
-	int channel_drums = Mix_PlayChannel(-1, sound_drums, 0);
-	if (channel_drums == -1) {
-		fprintf(stderr, "Unable to play WAV file: %s\n", Mix_GetError());
-	}
-	Mix_Volume(channel_drums, 0);
 
 
 	// Added in Sheet 3 - Start *****************************************************************
@@ -234,15 +218,15 @@ int main(int argc, char **args) {
 
 	// Added in sheet 4 - End *******************************************************************
 
-	const string contoursWindow = "Contours";
+	const string contoursWindow = "Webcam";
 	const string UI = "Threshold";
 	namedWindow(contoursWindow, CV_WINDOW_AUTOSIZE);
-	//namedWindow(stripWindow, CV_WINDOW_AUTOSIZE);
+	// namedWindow(stripWindow, CV_WINDOW_AUTOSIZE);
 	const string markerWindow = "Marker";
-	namedWindow(markerWindow, CV_WINDOW_NORMAL);
+	// namedWindow(markerWindow, CV_WINDOW_NORMAL);
 
 
-	int slider_value = 100;
+	int slider_value = 140;
 	createTrackbar(UI, contoursWindow, &slider_value, 255, on_trackbar, &slider_value);
 
 	// Added in sheet 4 - Start *****************************************************************
@@ -528,7 +512,7 @@ int main(int argc, char **args) {
 						// The intensity differences on the stripe
 						resize(imagePixelStripe, iplTmp, Size(100, 300));
 
-						imshow(stripWindow, iplTmp);
+						// imshow(stripWindow, iplTmp);
 						isFirstStripe = false;
 					}
 
@@ -836,23 +820,10 @@ int main(int argc, char **args) {
 			// -----------------------------
 		}
 
-		// --- Check if markers are present ---
-		
-		if (find(identifiers.begin(), identifiers.end(), SYNTH_ID) != identifiers.end()) {
-			Mix_Volume(channel_synth, 128);
-		} else {
-			Mix_Volume(channel_synth, 0);
+		// ---Play sound if markers are present ---
+		for (Instrument& instr : instruments) {
+			instr.playSound(identifiers);
 		}
-
-		if (find(identifiers.begin(), identifiers.end(), DRUMS_ID) != identifiers.end()) {
-			Mix_Volume(channel_drums, 128);
-		} else {
-			Mix_Volume(channel_drums, 0);
-		}
-
-		//restart loop
-		if (Mix_Playing(channel_synth) != 1) Mix_PlayChannel(channel_synth, sound_synth, 0);
-		if (Mix_Playing(channel_drums) != 1) Mix_PlayChannel(channel_drums, sound_drums, 0);
 
 
 		imshow(contoursWindow, imgFiltered);
@@ -863,16 +834,20 @@ int main(int argc, char **args) {
 			//end program
 			break;
 		}
+		/*
 		else if (pressedKey == 32) {
 			//switch synth volume on or off
 			if (Mix_Volume(channel_drums, 0) == 0) Mix_Volume(channel_drums, 128);
 		}
+		*/
 
 	}
 
 	destroyWindow(contoursWindow);
-	Mix_FreeChunk(sound_synth);
-	Mix_FreeChunk(sound_drums);
+
+	for (Instrument& instr : instruments) {
+		instr.freeChunk();
+	}
 
 	Mix_CloseAudio();
 	SDL_Quit();
