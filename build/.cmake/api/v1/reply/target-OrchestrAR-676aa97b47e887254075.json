@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "SDLTest"
+			"path" : "OrchestrAR"
 		}
 	],
 	"backtrace" : 1,
@@ -26,13 +26,13 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 23,
+				"line" : 20,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 27,
+				"line" : 22,
 				"parent" : 0
 			},
 			{
@@ -61,7 +61,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+					"fragment" : " -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
 				}
 			],
 			"includes" : 
@@ -98,15 +98,11 @@
 			]
 		}
 	],
-	"id" : "SDLTest::@6890427a1f51a3e7e1df",
+	"id" : "OrchestrAR::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
 		[
-			{
-				"fragment" : "-g",
-				"role" : "flags"
-			},
 			{
 				"fragment" : "",
 				"role" : "flags"
@@ -213,8 +209,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "SDLTest",
-	"nameOnDisk" : "SDLTest",
+	"name" : "OrchestrAR",
+	"nameOnDisk" : "OrchestrAR",
 	"paths" : 
 	{
 		"build" : ".",

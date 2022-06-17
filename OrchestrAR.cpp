@@ -1,6 +1,7 @@
-#include<opencv2/opencv.hpp>
-#include<iostream>
-#include<array>
+#include <opencv2/opencv.hpp>
+#include <iostream>
+#include <array>
+
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_mixer.h"
 
@@ -17,6 +18,23 @@ using namespace std;
 #define THICKNESS_VALUE 4
 
 #define SYNTH_PATH "" //TODO
+
+
+
+const string projectPath = "/Users/sam/Desktop/arwork/OrchestrAR";
+
+// --- Audio properties ---
+const int audio_rate = 22050;
+const Uint16 audio_format = AUDIO_S16SYS;
+const int audio_channels = 4;
+const int audio_buffers = 4096;
+
+// --- Marker identifiers ---
+//0690, 0272
+const array<int, 4> synth_marker = {-6, 9, 9, -6 };
+const array<int, 4> drums_marker = { -2, -3, 12, 4};
+
+
 
 // Struct holding all infos about each strip, e.g. length
 struct MyStrip {
@@ -141,11 +159,6 @@ array<int, 4> getCanonicalId(vector<array<int, 4> > rotations) {
 }
 
 int main(int argc, char **args) {
-	int audio_rate = 22050;
-	Uint16 audio_format = AUDIO_S16SYS;
-	int audio_channels = 4;
-	int audio_buffers = 4096;
-
 	Mat frame;
 	VideoCapture cap(0);
 
@@ -172,7 +185,10 @@ int main(int argc, char **args) {
 		exit(1);
 	}
 
-	Mix_Chunk* sound_synth = Mix_LoadWAV("/Users/sam/Desktop/arwork/OrchestrAR/Sounds/Melody/130_latinTrap_guitar.wav");
+	// --- Load melody ---
+	const string melodyPath = "/Sounds/Melody/130_latinTrap_guitar.wav";
+	Mix_Chunk* sound_synth = Mix_LoadWAV((projectPath + melodyPath).c_str());
+
 	if (sound_synth == NULL) {
 		fprintf(stderr, "Unable to load WAV file: %s\n", Mix_GetError());
 	}
@@ -183,7 +199,10 @@ int main(int argc, char **args) {
 	Mix_Volume(channel_synth, 0);
 
 
-	Mix_Chunk* sound_drums = Mix_LoadWAV("/Users/sam/Desktop/arwork/OrchestrAR/Sounds/Drums/130_basicTrap_drums.wav");
+	// --- Load drums ---
+	const string drumsPath = "/Sounds/Drums/130_basicTrap_drums.wav";
+	Mix_Chunk* sound_drums = Mix_LoadWAV((projectPath + drumsPath).c_str());
+
 	if (sound_drums == NULL) {
 		fprintf(stderr, "Unable to load WAV file: %s\n", Mix_GetError());
 	}
@@ -671,20 +690,17 @@ int main(int argc, char **args) {
 			imshow(markerWindow, warped);
 		}
 
-		//0690, 0272
-		//check if synth marker is present
-		array<int, 4> synth_marker = {-6, 9, 9, -6 };
-		array<int, 4> drums_marker = { -2, -3, 12, 4};
+		// --- Check if markers are present ---
+		
 		if (find(identifiers.begin(), identifiers.end(), synth_marker) != identifiers.end()) {
 			Mix_Volume(channel_synth, 128);
-		}
-		else {
+		} else {
 			Mix_Volume(channel_synth, 0);
 		}
+
 		if (find(identifiers.begin(), identifiers.end(), drums_marker) != identifiers.end()) {
 			Mix_Volume(channel_drums, 128);
-		}
-		else {
+		} else {
 			Mix_Volume(channel_drums, 0);
 		}
 
@@ -724,4 +740,3 @@ int main(int argc, char **args) {
 
 	return 0;
 }
-

@@ -6,7 +6,7 @@
 			[
 				{
 					"build" : ".",
-					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"jsonFile" : "directory-.-f5ebdc15457944623624.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.4"
@@ -19,7 +19,7 @@
 					]
 				}
 			],
-			"name" : "Debug",
+			"name" : "",
 			"projects" : 
 			[
 				{
@@ -27,7 +27,7 @@
 					[
 						0
 					],
-					"name" : "SDLTest",
+					"name" : "OrchestrAR",
 					"targetIndexes" : 
 					[
 						0
@@ -38,9 +38,9 @@
 			[
 				{
 					"directoryIndex" : 0,
-					"id" : "SDLTest::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-SDLTest-Debug-fe6e7771dbb76d254c56.json",
-					"name" : "SDLTest",
+					"id" : "OrchestrAR::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-OrchestrAR-676aa97b47e887254075.json",
+					"name" : "OrchestrAR",
 					"projectIndex" : 0
 				}
 			]

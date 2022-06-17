@@ -20,14 +20,15 @@ CMAKE_ADDR2LINE:FILEPATH=CMAKE_ADDR2LINE-NOTFOUND
 //Path to a program.
 CMAKE_AR:FILEPATH=/usr/bin/ar
 
-//No help, variable specified on the command line.
-CMAKE_BUILD_TYPE:STRING=Debug
+//Choose the type of build, options are: None Debug Release RelWithDebInfo
+// MinSizeRel ...
+CMAKE_BUILD_TYPE:STRING=
 
 //Enable/Disable color output during build.
 CMAKE_COLOR_MAKEFILE:BOOL=ON
 
-//No help, variable specified on the command line.
-CMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++
+//CXX compiler
+CMAKE_CXX_COMPILER:STRING=/usr/bin/clang++
 
 //Flags used by the CXX compiler during all build types.
 CMAKE_CXX_FLAGS:STRING=
@@ -44,8 +45,8 @@ CMAKE_CXX_FLAGS_RELEASE:STRING=-O3 -DNDEBUG
 //Flags used by the CXX compiler during RELWITHDEBINFO builds.
 CMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG
 
-//No help, variable specified on the command line.
-CMAKE_C_COMPILER:FILEPATH=/usr/bin/clang
+//C compiler
+CMAKE_C_COMPILER:STRING=/usr/bin/clang
 
 //Flags used by the C compiler during all build types.
 CMAKE_C_FLAGS:STRING=
@@ -80,8 +81,8 @@ CMAKE_EXE_LINKER_FLAGS_RELEASE:STRING=
 //Flags used by the linker during RELWITHDEBINFO builds.
 CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 
-//No help, variable specified on the command line.
-CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE
+//Enable/Disable output of compile commands during generation.
+CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=
 
 //Path to a program.
 CMAKE_INSTALL_NAME_TOOL:FILEPATH=/opt/local/bin/install_name_tool
@@ -142,7 +143,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=SDLTest
+CMAKE_PROJECT_NAME:STATIC=OrchestrAR
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -209,6 +210,15 @@ CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 //The directory containing a CMake configuration file for OpenCV.
 OpenCV_DIR:PATH=/usr/local/share/OpenCV
 
+//Value Computed by CMake
+OrchestrAR_BINARY_DIR:STATIC=/Users/sam/Desktop/arwork/OrchestrAR/build
+
+//Value Computed by CMake
+OrchestrAR_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+OrchestrAR_SOURCE_DIR:STATIC=/Users/sam/Desktop/arwork/OrchestrAR
+
 //Where the SDL2 headers can be found
 SDL2_INCLUDE_DIR:PATH=/Users/sam/Library/Frameworks/SDL2.framework/Headers
 
@@ -232,15 +242,6 @@ SDL2_NO_DEFAULT_PATH:BOOL=OFF
 
 //Custom SDL2 Library path
 SDL2_PATH:STRING=
-
-//Value Computed by CMake
-SDLTest_BINARY_DIR:STATIC=/Users/sam/Desktop/arwork/OrchestrAR/build
-
-//Value Computed by CMake
-SDLTest_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-SDLTest_SOURCE_DIR:STATIC=/Users/sam/Desktop/arwork/OrchestrAR
 
 
 ########################
@@ -307,6 +308,8 @@ CMAKE_EXE_LINKER_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1
 CMAKE_EXE_LINKER_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
 CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_EXPORT_COMPILE_COMMANDS
+CMAKE_EXPORT_COMPILE_COMMANDS-ADVANCED:INTERNAL=1
 //Name of external makefile project generator.
 CMAKE_EXTRA_GENERATOR:INTERNAL=
 //Name of generator.

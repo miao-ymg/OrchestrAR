@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/Users/sam/Library/Frameworks/SDL2.framework/Headers -I/Users/sam/Library/Frameworks/SDL2_mixer.framework/Headers -F/Users/sam/Desktop/arwork/OrchestrAR -isystem /usr/local/include -isystem /usr/local/include/opencv
 
-CXX_FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+CXX_FLAGS =  -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 

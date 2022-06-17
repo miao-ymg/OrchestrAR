@@ -1,2 +1,2 @@
-# Empty dependencies file for SDLTest.
+# Empty dependencies file for OrchestrAR.
 # This may be replaced when dependencies are built.

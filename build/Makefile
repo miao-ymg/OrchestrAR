@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named SDLTest
+# Target rules for targets named OrchestrAR
 
 # Build rule for target.
-SDLTest: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 SDLTest
-.PHONY : SDLTest
+OrchestrAR: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 OrchestrAR
+.PHONY : OrchestrAR
 
 # fast build rule for target.
-SDLTest/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SDLTest.dir/build.make CMakeFiles/SDLTest.dir/build
-.PHONY : SDLTest/fast
+OrchestrAR/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OrchestrAR.dir/build.make CMakeFiles/OrchestrAR.dir/build
+.PHONY : OrchestrAR/fast
 
 OrchestrAR.o: OrchestrAR.cpp.o
 .PHONY : OrchestrAR.o
 
 # target to build an object file
 OrchestrAR.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SDLTest.dir/build.make CMakeFiles/SDLTest.dir/OrchestrAR.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OrchestrAR.dir/build.make CMakeFiles/OrchestrAR.dir/OrchestrAR.cpp.o
 .PHONY : OrchestrAR.cpp.o
 
 OrchestrAR.i: OrchestrAR.cpp.i
@@ -142,7 +142,7 @@ OrchestrAR.i: OrchestrAR.cpp.i
 
 # target to preprocess a source file
 OrchestrAR.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SDLTest.dir/build.make CMakeFiles/SDLTest.dir/OrchestrAR.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OrchestrAR.dir/build.make CMakeFiles/OrchestrAR.dir/OrchestrAR.cpp.i
 .PHONY : OrchestrAR.cpp.i
 
 OrchestrAR.s: OrchestrAR.cpp.s
@@ -150,7 +150,7 @@ OrchestrAR.s: OrchestrAR.cpp.s
 
 # target to generate assembly for a file
 OrchestrAR.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SDLTest.dir/build.make CMakeFiles/SDLTest.dir/OrchestrAR.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OrchestrAR.dir/build.make CMakeFiles/OrchestrAR.dir/OrchestrAR.cpp.s
 .PHONY : OrchestrAR.cpp.s
 
 # Help Target
@@ -161,7 +161,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... SDLTest"
+	@echo "... OrchestrAR"
 	@echo "... OrchestrAR.o"
 	@echo "... OrchestrAR.i"
 	@echo "... OrchestrAR.s"
