@@ -1,4 +1,4 @@
-#include "ownlib.h"
+#include "../include/ownlib.h"
 
 #include "../opencv2/opencv.hpp"
 #include <iostream>
@@ -6,7 +6,7 @@
 
 #include <SDL.h>
 #include <SDL_mixer.h>
-#include "Instrument.h"
+#include "../include/Instrument.h"
 #include "Instrument.cpp"
 
 #include "PoseEstimation.cpp"
@@ -56,7 +56,7 @@ Mat videoStreamFrameGray;
 Mat videoStreamFrameOutput;
 
 const string stripWindow = "Strip Window";
-const string kWinName4 = "Exercise 4 - Marker";
+const string kWinName4 = "Marker";
 
 // Added in sheet 4 - Start *****************************************************************
 
@@ -163,8 +163,8 @@ int main(int argc, char **args) {
 	vector<Instrument> instruments;
 
 	// --- Add instrument markers
-	instruments.push_back(Instrument(1680, "../../Sounds/Melody/130_latinTrap_guitar.wav"));
-	instruments.push_back(Instrument(626, "../../Sounds/Drums/130_basicTrap_drums.wav"));
+	instruments.push_back(Instrument(1680, "../Sounds/Melody/130_latinTrap_guitar.wav"));
+	instruments.push_back(Instrument(626, "../Sounds/Drums/130_basicTrap_drums.wav"));
 
 
 	const string streamWindow = "Stream";

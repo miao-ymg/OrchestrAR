@@ -1,5 +1,9 @@
 #pragma once
 
+#include <vector>
+#include <SDL.h>
+#include <SDL_mixer.h>
+
 
 using namespace std;
 
