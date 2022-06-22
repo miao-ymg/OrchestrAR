@@ -5,10 +5,18 @@
 #include <SDL_mixer.h>
 
 
-using namespace std;
-
 class Instrument {
 public:
+    /**
+     * Getter for id
+     */
+    int getID() const;
+
+    /**
+     * Map the relative volume to absolute volume
+     */
+    void setVolume(double volume);
+
     /**
      * Constructor
      */
@@ -22,7 +30,7 @@ public:
     /**
      * Play the sound in an endless loop
      */
-    void toggleSound(vector<int>& identifiers);
+    void toggleSound(std::vector<int>& identifiers);
 
     /**
      * Free the memory space occupied by the music chunk.
@@ -36,4 +44,5 @@ protected:
 
     Mix_Chunk* sample;
     int channel;
+    int volume;
 };

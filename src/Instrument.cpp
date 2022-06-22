@@ -5,12 +5,24 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 
-#include "Instrument.h"
+#include "../include/Instrument.h"
 
+
+using namespace std;
 
 Instrument::Instrument(const int id, const char* soundPath) 
 	: 
 	soundPath(std::move(soundPath)), id(id) {};
+
+
+int Instrument::getID() const {
+	return id;
+}
+
+
+void Instrument::setVolume(double volume) {
+	this->volume = static_cast<int>(volume * 128);
+}
 
 
 void Instrument::loadSound() {
@@ -29,7 +41,8 @@ void Instrument::loadSound() {
 
 void Instrument::toggleSound(vector<int>& identifiers) {
     if (find(identifiers.begin(), identifiers.end(), id) != identifiers.end()) {
-		Mix_Volume(channel, 128);
+		Mix_Volume(channel, volume);
+		std::cout << "Vol: " << volume << std::endl;
 	} else {
 		Mix_Volume(channel, 0);
 	}

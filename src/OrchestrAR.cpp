@@ -153,6 +153,17 @@ array<int, 4> getCanonicalId(vector<array<int, 4> > rotations) {
 	return result;
 }
 
+
+// --- OWN HELPER FUNCTIONS ---
+float maxY4(Point2f pts[]) {
+	float max = pts[0].y;
+
+	for (size_t i = 1; i < 4; ++i)
+		max = (max >= pts[i].y) ? max : pts[i].y;
+	return max;
+}
+
+
 int main(int argc, char **args) {
 	Mat frame;
 	VideoCapture cap(0);
@@ -744,6 +755,17 @@ int main(int argc, char **args) {
 
 					// Added in Exercise 5 - End *******************************************************************
 				}
+			}
+
+			// --- Setting volume relative to marker position height ---
+			float maxY = maxY4(corners);
+			double volume = maxY / imgFiltered.rows;
+
+			for (Instrument& instr : instruments) {
+				if (instr.getID() == code) {
+					instr.setVolume(volume);
+					break;
+				}	
 			}
 
 			// Print ID
