@@ -1,5 +1,3 @@
-
-//#define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 
 
@@ -57,6 +55,16 @@ void drawCone(GLdouble base, GLdouble height, GLint slices, GLint stacks)
 		// normal is just pointing down
 		glNormal3f(0, -1, 0);
 		glVertex3f(sin((double)angle) * base, cos((double)angle) * base, 0.f);
+	}
+	glEnd();
+}
+
+void drawCircle(float r, int segments) {
+	glBegin(GL_TRIANGLE_FAN);
+	glVertex3f(0, 0, 0);
+	for (size_t n = 0; n <= segments; ++n) {
+		const float t = 2 * M_PI * (float) n / (float) segments;
+		glVertex3f(sin(t) * r, cos(t) * r, 0);
 	}
 	glEnd();
 }

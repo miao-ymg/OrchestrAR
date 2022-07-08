@@ -6,6 +6,7 @@
 
 #include <SDL.h>
 #include <SDL_mixer.h>
+// #include <cpct_dll.h>
 #include "../include/Instrument.h"
 #include "Instrument.cpp"
 

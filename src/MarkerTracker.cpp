@@ -8,9 +8,20 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+#include "Instrument.h"
 #include "MarkerTracker.h"
 #include "PoseEstimation.h"
 
+using namespace cv;
+
+// --- OWN HELPER FUNCTIONS ---
+float maxY4(Point2f pts[]) {
+	float max = pts[0].y;
+
+	for (size_t i = 1; i < 4; ++i)
+		max = (max >= pts[i].y) ? max : pts[i].y;
+	return max;
+}
 
 void trackbarHandler( int pos, void* slider_value ) {
 	*( (int*)slider_value ) = pos;
@@ -42,19 +53,20 @@ int subpixSampleSafe ( const cv::Mat &pSrc, const cv::Point2f &p )
 
 void MarkerTracker::init()
 {
+	/*
 	std::cout << "Startup\n";
 	cv::namedWindow(kWinName1, CV_WINDOW_AUTOSIZE);
     cv::namedWindow(kWinName2, CV_WINDOW_AUTOSIZE);
 	cv::namedWindow(kWinName3, CV_WINDOW_AUTOSIZE);
 	cv::namedWindow(kWinName4, 0 );
 	cvResizeWindow("Marker", 120, 120 );
-
+	*/
 	int max = 255;
 	int slider_value = 100;
-	cv::createTrackbar( "Threshold", kWinName2, &slider_value, 255, trackbarHandler, &slider_value);
+	//cv::createTrackbar( "Threshold", kWinName2, &slider_value, 255, trackbarHandler, &slider_value);
 
 	int bw_sileder_value = bw_thresh;
-	cv::createTrackbar( "BW Threshold", kWinName2, &slider_value, 255, bw_trackbarHandler, &bw_sileder_value);
+	//cv::createTrackbar( "BW Threshold", kWinName2, &slider_value, 255, bw_trackbarHandler, &bw_sileder_value);
 	
 	memStorage = cvCreateMemStorage();
 }
@@ -62,15 +74,16 @@ void MarkerTracker::init()
 void MarkerTracker::cleanup() 
 {
 	cvReleaseMemStorage (&memStorage);
-
+	/*
 	cv::destroyWindow (kWinName1);
 	cv::destroyWindow (kWinName2);
 	cv::destroyWindow (kWinName3);
 	cv::destroyWindow (kWinName4);
+	*/
 	std::cout << "Finished\n";
 }
 
-void MarkerTracker::findMarker( cv::Mat &img_bgr, float resultMatrix[16] )
+void MarkerTracker::findMarker( cv::Mat &img_bgr, float resultMatrix[16], unordered_map<int, Instrument> &instruments, vector<int> &identifiers)
 {
 	bool isFirstStripe = true;
 
@@ -83,7 +96,9 @@ void MarkerTracker::findMarker( cv::Mat &img_bgr, float resultMatrix[16] )
 
 		// Find Contours with old OpenCV APIs
 		CvSeq* contours;
-		cv::Mat img_mono_(img_mono);
+		CvMat* cvMatHeader = cvCreateMat(img_mono.rows, img_mono.cols, img_mono.type());
+        cvSetData(cvMatHeader, img_mono.data, img_mono.step);
+        CvMat img_mono_ = *(cvMatHeader);
 
 		cvFindContours(
 			&img_mono_, memStorage, &contours, sizeof(CvContour),
@@ -258,7 +273,7 @@ void MarkerTracker::findMarker( cv::Mat &img_bgr, float resultMatrix[16] )
 					{
 						cv::Mat iplTmp;
 						cv::resize( iplStripe, iplTmp, cv::Size(100,300) );
-						cv::imshow ( kWinName3, iplTmp );//iplStripe );
+						//cv::imshow ( kWinName3, iplTmp );//iplStripe );
 						isFirstStripe = false;
 					}
 
@@ -414,11 +429,24 @@ void MarkerTracker::findMarker( cv::Mat &img_bgr, float resultMatrix[16] )
 				}
 			}
 
+			float maxY = maxY4(corners);
+			double volume = maxY / img_bgr.rows;
+
+			for (auto& instr : instruments) {
+				if (instr.first == code) {
+					instr.second.setVolume(volume);
+					cout << "vol: " << volume << endl;
+					break;
+				}	
+			}
+			
+			identifiers.push_back(code);
+
 			printf ("Found: %04x\n", code);
 
 			if ( isFirstMarker )
 			{
-				cv::imshow ( kWinName4, iplMarker );
+				//cv::imshow ( kWinName4, iplMarker );
 				isFirstMarker = false;
 			}
 
@@ -440,6 +468,10 @@ void MarkerTracker::findMarker( cv::Mat &img_bgr, float resultMatrix[16] )
 
 			estimateSquarePose( resultMatrix, (cv::Point2f*)corners, kMarkerSize );
 
+			if (instruments.find(code) != instruments.end()) {
+				instruments.at(code).setPoseMatrix(resultMatrix);
+			}
+
 			//this part is only for printing
 			for (int i = 0; i<4; ++i) {
 				for (int j = 0; j<4; ++j) {
@@ -458,8 +490,10 @@ void MarkerTracker::findMarker( cv::Mat &img_bgr, float resultMatrix[16] )
 			std::cout << "\n";
 		} // end of loop over contours
 
-		cv::imshow(kWinName1, img_bgr);
-		cv::imshow(kWinName2, img_mono);
+		
+
+		//cv::imshow(kWinName1, img_bgr);
+		//cv::imshow(kWinName2, img_mono);
 
 
 

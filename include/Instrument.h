@@ -37,6 +37,16 @@ public:
      */
     void freeChunk();
 
+    /**
+     * Set pose informationi for this instruments marker
+     */
+    void setPoseMatrix(float matrix[16]);
+
+    /**
+     * Getter for pose matrix
+     */
+    float* getPoseMatrix();
+
 
 protected:
     const int id;
@@ -45,4 +55,6 @@ protected:
     Mix_Chunk* sample;
     int channel;
     int volume;
+
+    float poseMatrix[16];
 };

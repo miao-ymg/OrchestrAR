@@ -2,6 +2,7 @@
 #define MARKER_TRACKER_H
 
 #include <opencv/cv.h>
+#include "Instrument.h"
 
 class CvMemStorage;
 
@@ -29,7 +30,7 @@ public:
 	~MarkerTracker(){
 		cleanup();
 	}
-	void findMarker( cv::Mat &img_bgr, float resultMatrix[16] );
+	void findMarker( cv::Mat &img_bgr, float resultMatrix[16], unordered_map<int, Instrument> &instruments, vector<int> &identifers);
 protected:
 	void init( );
 	void cleanup( );

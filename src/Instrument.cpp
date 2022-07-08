@@ -42,7 +42,7 @@ void Instrument::loadSound() {
 void Instrument::toggleSound(vector<int>& identifiers) {
     if (find(identifiers.begin(), identifiers.end(), id) != identifiers.end()) {
 		Mix_Volume(channel, volume);
-		std::cout << "Vol: " << volume << std::endl;
+		// std::cout << "Vol: " << volume << std::endl;
 	} else {
 		Mix_Volume(channel, 0);
 	}
@@ -55,4 +55,14 @@ void Instrument::toggleSound(vector<int>& identifiers) {
 
 void Instrument::freeChunk() {
     Mix_FreeChunk(sample);
+}
+
+void Instrument::setPoseMatrix(float matrix[16]){
+	memcpy(poseMatrix, matrix, sizeof(float) * 16);
+}
+
+float* Instrument::getPoseMatrix() {
+	float ret[16];
+	memcpy(ret, poseMatrix, sizeof(float) * 16);
+	return ret;
 }
