@@ -144,6 +144,10 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, vector<std::array<float
 
 // Added in Exercise 8 - Start *****************************************************************
 
+	const float degreePerSec = 90.0f;
+
+	const float angle = (float) glfwGetTime() * degreePerSec;
+
 	unsigned char bkgnd[camera_width * camera_height * 3];
 
 	// Copy picture data into bkgnd array
@@ -186,23 +190,7 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, vector<std::array<float
 	// Move to marker-position
 	glMatrixMode(GL_MODELVIEW);
 
-	cout << "Matrix size: " << resultMatrices.size() << endl;
-
 	for (auto& resultMatrix : resultMatrices) {
-
-		/*
-		//this part is only for printing
-		for (int i = 0; i<4; ++i) {
-			for (int j = 0; j<4; ++j) {
-				std::cout << std::setw(6);
-				std::cout << std::setprecision(4);
-				std::cout << resultMatrix[4*i+j] << " ";
-			}
-			std::cout << "\n";
-		}
-		std::cout << "\n";
-		*/
-
 		
 		// Sadly doesn't work for Windows -> so we made own solution!
 		//glLoadTransposeMatrixf(resultMatrix);
@@ -220,14 +208,16 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, vector<std::array<float
 		glLoadMatrixf(resultTransposedMatrix);
 		
 		// Rotate 90 desgress in x-direction
-		glRotatef(-90, 1, 0, 0);
+		glRotatef(-90, 0, 0, 1);
 		// Scale down!
 		glScalef(0.03, 0.03, 0.03);
 
 	// Added in Exercise 8 - End *****************************************************************
 
-		drawCircle(1, 100);
-		drawSphere(0.8, 10, 10);
+		glRotatef(angle, 0, 0, 1);
+
+		drawCircle(1, 16);
+		drawSphere(0.5, 10, 10);
 		// Draw 3 white spheres
 		/*
 		glColor4f(1.0, 1.0, 1.0, 1.0);
