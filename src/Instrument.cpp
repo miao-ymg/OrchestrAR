@@ -24,6 +24,7 @@ void Instrument::setPoseMatrix(float matrix[16]){
 
 
 void Instrument::setVolume(double volume) {
+	this->timeToLive = 32;
 	this->volume = static_cast<int>(volume * 128);
 }
 
@@ -47,7 +48,9 @@ void Instrument::toggleSound(vector<int>& identifiers) {
 		Mix_Volume(channel, volume);
 		// std::cout << "Vol: " << volume << std::endl;
 	} else {
-		Mix_Volume(channel, 0);
+		--timeToLive;
+		if (timeToLive == 0)
+			Mix_Volume(channel, 0);
 	}
 
 	// --- Repeat the sound file if neccesary ---

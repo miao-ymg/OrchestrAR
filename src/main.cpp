@@ -260,8 +260,8 @@ void reshape( GLFWwindow* window, int width, int height ) {
 int main(int argc, char* argv[]) {
 
 	// --- Add instrument markers ---
-	instruments.insert(std::make_pair(1680, Instrument(1680, "../Sounds/Melody/130_latinTrap_guitar.wav")));
-	instruments.insert(std::make_pair(626, Instrument(626, "../Sounds/Drums/130_basicTrap_drums.wav")));
+	instruments.insert(std::make_pair(1680, Instrument(1680, "../Sounds/Melody/130_happyAccordion_melody.wav")));
+	instruments.insert(std::make_pair(626, Instrument(626, "../Sounds/Drums/130_trapDrum_drums.wav")));
 
 	GLFWwindow* window;
 
