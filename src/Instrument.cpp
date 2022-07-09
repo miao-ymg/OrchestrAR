@@ -5,12 +5,18 @@ using namespace std;
 
 const int MUSIC_STOP_DELAY = 16;
 
-Instrument::Instrument(const int id, const char* soundPath) 
+Instrument::Instrument(const int id, Role role, const char* soundPath) 
 	: 
-	soundPath(std::move(soundPath)), id(id), timeToLive(MUSIC_STOP_DELAY) {};
+	soundPath(std::move(soundPath)), id(id), timeToLive(MUSIC_STOP_DELAY), role(role) {};
 
 
 int Instrument::getID() const { return id; }
+
+
+Role Instrument::getRole() const { return role; }
+
+
+int Instrument::getVolume() const { return volume; }
 
 
 std::array<float, 16> Instrument::getPoseMatrix() {
