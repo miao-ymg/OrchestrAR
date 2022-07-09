@@ -56,5 +56,5 @@ protected:
     float poseMatrix[16];
     int channel;
     int volume;
-    int timeToLive = 32;
+    int timeToLive;         // Remaining music playing time when marker disappears
 };

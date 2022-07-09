@@ -262,6 +262,8 @@ int main(int argc, char* argv[]) {
 	// --- Add instrument markers ---
 	instruments.insert(std::make_pair(1680, Instrument(1680, "../Sounds/Melody/130_happyAccordion_melody.wav")));
 	instruments.insert(std::make_pair(626, Instrument(626, "../Sounds/Drums/130_trapDrum_drums.wav")));
+	instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, "../Sounds/Vocals/130_asylumDrill_vocals.wav")));
+	
 
 	GLFWwindow* window;
 

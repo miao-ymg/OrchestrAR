@@ -3,9 +3,11 @@
 
 using namespace std;
 
+const int MUSIC_STOP_DELAY = 16;
+
 Instrument::Instrument(const int id, const char* soundPath) 
 	: 
-	soundPath(std::move(soundPath)), id(id) {};
+	soundPath(std::move(soundPath)), id(id), timeToLive(MUSIC_STOP_DELAY) {};
 
 
 int Instrument::getID() const { return id; }
@@ -24,7 +26,7 @@ void Instrument::setPoseMatrix(float matrix[16]){
 
 
 void Instrument::setVolume(double volume) {
-	this->timeToLive = 32;
+	this->timeToLive = MUSIC_STOP_DELAY;
 	this->volume = static_cast<int>(volume * 128);
 }
 
