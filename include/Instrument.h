@@ -20,7 +20,7 @@ public:
     /**
      * Getter for poseMatrix
      */
-    float* getPoseMatrix();
+    std::array<float, 16> getPoseMatrix();
 
     /**
      * Set pose informationi for this instruments marker

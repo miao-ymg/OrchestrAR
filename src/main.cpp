@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
+#include <algorithm>
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -139,7 +140,7 @@ void initGL(int argc, char *argv[]) {
 	glEnable(GL_LIGHT0);
 }
 
-void display(GLFWwindow* window, const cv::Mat &img_bgr, float resultMatrix[16]) {
+void display(GLFWwindow* window, const cv::Mat &img_bgr, vector<std::array<float, 16> > &resultMatrices) {
 
 // Added in Exercise 8 - Start *****************************************************************
 
@@ -150,22 +151,22 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, float resultMatrix[16])
 
 // Added in Exercise 8 - End *****************************************************************
 
-    // Clear buffers
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	// Clear buffers
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Needed for rendering the real camera image
-    glMatrixMode(GL_MODELVIEW);
+	glMatrixMode(GL_MODELVIEW);
 	// No position changes
-    glLoadIdentity();
+	glLoadIdentity();
 	
 // Added in Exercise 8 - Start *****************************************************************
 
-    glDisable(GL_DEPTH_TEST);
+	glDisable(GL_DEPTH_TEST);
 
-    glMatrixMode(GL_PROJECTION);
+	glMatrixMode(GL_PROJECTION);
 	// Push the projection matrix (frustum) -> frustum will be saved on the stack
-    glPushMatrix();
-    glLoadIdentity();
+	glPushMatrix();
+	glLoadIdentity();
 	// In the ortho view all objects stay the same size at every distance
 	glOrtho(0.0, camera_width, 0.0, camera_height,-1,1);
 
@@ -174,65 +175,84 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, float resultMatrix[16])
 	glRasterPos2i(0, camera_height-1);
 	// Load and render the camera image -> unsigned byte because of bkgnd as unsigned char array
 	// bkgnd 3 channels -> pixelwise rendering
-    glDrawPixels(camera_width, camera_height, GL_BGR_EXT, GL_UNSIGNED_BYTE, bkgnd);
+	glDrawPixels(camera_width, camera_height, GL_BGR_EXT, GL_UNSIGNED_BYTE, bkgnd);
 
 	// Go back to the previous projection -> frustum
-    glPopMatrix();
-
-	// Activate depth -> that snowman can be scaled with depth
-    glEnable(GL_DEPTH_TEST);
-
-    // Move to marker-position
-    glMatrixMode(GL_MODELVIEW);
-    
-	// Sadly doesn't work for Windows -> so we made own solution!
-	//glLoadTransposeMatrixf(resultMatrix);
-
-	// -> Transpose the Modelview Matrix
-	float resultTransposedMatrix[16];
-	for (int x=0; x<4; ++x) {
-		for (int y=0; y<4; ++y) {
-			// Change columns to rows
-			resultTransposedMatrix[x*4+y] = resultMatrix[y*4+x];
-		}
-	}
-
-	// Load the transpose matrix
-	glLoadMatrixf(resultTransposedMatrix);
-	
-	// Rotate 90 desgress in x-direction
-    glRotatef(-90, 1, 0, 0);
-	// Scale down!
-	glScalef(0.03, 0.03, 0.03);
-
-// Added in Exercise 8 - End *****************************************************************
-
-	drawCircle(1, 100);
-	drawSphere(0.8, 10, 10);
-	// Draw 3 white spheres
-	/*
-	glColor4f(1.0, 1.0, 1.0, 1.0);
-	drawSphere(0.8, 10, 10);
-	glTranslatef(0.0, 0.8, 0.0);
-	drawSphere(0.6, 10, 10);
-	glTranslatef(0.0, 0.6, 0.0);
-	drawSphere(0.4, 10, 10);
-
-	// Draw the eyes
-	glPushMatrix();
-	glColor4f(0.0, 0.0, 0.0, 1.0);
-	glTranslatef(0.2, 0.2, 0.2);
-	drawSphere(0.066, 10, 10);
-	glTranslatef(0, 0, -0.4);
-	drawSphere(0.066, 10, 10);
 	glPopMatrix();
 
-	// Draw a nose
-	glColor4f(1.0, 0.5, 0.0, 1.0);
-	glTranslatef(0.3, 0.0, 0.0);
-	glRotatef(90, 0, 1, 0);
-	drawCone(0.1, 0.3, 10, 10);
-	*/
+	// Activate depth -> that snowman can be scaled with depth
+	glEnable(GL_DEPTH_TEST);
+
+	// Move to marker-position
+	glMatrixMode(GL_MODELVIEW);
+
+	cout << "Matrix size: " << resultMatrices.size() << endl;
+
+	for (auto& resultMatrix : resultMatrices) {
+
+		/*
+		//this part is only for printing
+		for (int i = 0; i<4; ++i) {
+			for (int j = 0; j<4; ++j) {
+				std::cout << std::setw(6);
+				std::cout << std::setprecision(4);
+				std::cout << resultMatrix[4*i+j] << " ";
+			}
+			std::cout << "\n";
+		}
+		std::cout << "\n";
+		*/
+
+		
+		// Sadly doesn't work for Windows -> so we made own solution!
+		//glLoadTransposeMatrixf(resultMatrix);
+
+		// -> Transpose the Modelview Matrix
+		float resultTransposedMatrix[16];
+		for (int x=0; x<4; ++x) {
+			for (int y=0; y<4; ++y) {
+				// Change columns to rows
+				resultTransposedMatrix[x*4+y] = resultMatrix[y*4+x];
+			}
+		}
+
+		// Load the transpose matrix
+		glLoadMatrixf(resultTransposedMatrix);
+		
+		// Rotate 90 desgress in x-direction
+		glRotatef(-90, 1, 0, 0);
+		// Scale down!
+		glScalef(0.03, 0.03, 0.03);
+
+	// Added in Exercise 8 - End *****************************************************************
+
+		drawCircle(1, 100);
+		drawSphere(0.8, 10, 10);
+		// Draw 3 white spheres
+		/*
+		glColor4f(1.0, 1.0, 1.0, 1.0);
+		drawSphere(0.8, 10, 10);
+		glTranslatef(0.0, 0.8, 0.0);
+		drawSphere(0.6, 10, 10);
+		glTranslatef(0.0, 0.6, 0.0);
+		drawSphere(0.4, 10, 10);
+
+		// Draw the eyes
+		glPushMatrix();
+		glColor4f(0.0, 0.0, 0.0, 1.0);
+		glTranslatef(0.2, 0.2, 0.2);
+		drawSphere(0.066, 10, 10);
+		glTranslatef(0, 0, -0.4);
+		drawSphere(0.066, 10, 10);
+		glPopMatrix();
+
+		// Draw a nose
+		glColor4f(1.0, 0.5, 0.0, 1.0);
+		glTranslatef(0.3, 0.0, 0.0);
+		glRotatef(90, 0, 1, 0);
+		drawCone(0.1, 0.3, 10, 10);
+		*/
+	}
 }
 
 void reshape( GLFWwindow* window, int width, int height ) {
@@ -344,16 +364,21 @@ int main(int argc, char* argv[]) {
 		// Track a marker and get the pose of the marker
 		markerTracker.findMarker(img_bgr, resultMatrix, instruments, identifiers);
 
+		vector<std::array<float, 16> > resultMatrices;
+
 		// ---Play sound if markers are present ---
 		for (auto& instr : instruments) {
 			instr.second.toggleSound(identifiers);
+			if (find(identifiers.begin(), identifiers.end(), instr.second.getID()) != identifiers.end()) {
+				resultMatrices.push_back(instr.second.getPoseMatrix());
+			}
 			//display(window, img_bgr, instr.second.getPoseMatrix());
 		}
 
 		// glViewport( 0, 0, camera_width, camera_height);
 
 		// Render here
-		display(window, img_bgr, resultMatrix);
+		display(window, img_bgr, resultMatrices);
 
 		// Swap front and back buffers
 		glfwSwapBuffers(window);

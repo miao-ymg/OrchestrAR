@@ -13,9 +13,10 @@ Instrument::Instrument(const int id, const char* soundPath)
 int Instrument::getID() const { return id; }
 
 
-float* Instrument::getPoseMatrix() {
-	float ret[16];
-	memcpy(ret, poseMatrix, sizeof(float) * 16);
+std::array<float, 16> Instrument::getPoseMatrix() {
+	std::array<float, 16> ret;
+	for (size_t i = 0; i < 16; i++)
+		ret[i] = poseMatrix[i];
 	return ret;
 }
 

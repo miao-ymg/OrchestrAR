@@ -11,7 +11,8 @@ find_package(SDL2_mixer REQUIRED)
 
 set(ORCHESTRAR_SOURCES src/main.cpp)
 
-include_directories(${OpenCV_INCLUDE_DIR} ${OpenCV_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} "/usr/local/Cellar/glfw/3.3.7/include" ${SDL2_INCLUDE_DIR} ${SDL2_MIXER_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+include_directories(${OpenCV_INCLUDE_DIR} ${OpenCV_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${SDL2_INCLUDE_DIR} ${SDL2_MIXER_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 add_executable(OrchestrAR ${ORCHESTRAR_SOURCES})
-target_link_libraries (OrchestrAR ${OpenCV_LIBS} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} "/usr/local/Cellar/glfw/3.3.7/lib/libglfw.3.3.dylib" ${SDL2_LIBRARY} ${SDL2MAIN_LIBRARY} ${SDL2_MIXER_LIBRARY})
+target_link_libraries (OrchestrAR ${OpenCV_LIBS} ${OPENGL_LIBRARIES} ${GLEW_LIBRARY} ${GLEW_LIBRARIES} ${SDL2_LIBRARY} ${SDL2MAIN_LIBRARY} ${SDL2_MIXER_LIBRARY})

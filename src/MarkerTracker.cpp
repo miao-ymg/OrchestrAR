@@ -19,8 +19,10 @@ using namespace cv;
 float maxY4(Point2f pts[]) {
 	float max = pts[0].y;
 
-	for (size_t i = 1; i < 4; ++i)
-		max = (max >= pts[i].y) ? max : pts[i].y;
+	for (size_t i = 1; i < 4; ++i) {
+		if (max < pts[i].y)
+			max = pts[i].y;
+	}
 	return max;
 }
 
@@ -474,7 +476,7 @@ void MarkerTracker::findMarker( cv::Mat &img_bgr, float resultMatrix[16], unorde
 			if (instruments.find(code) != instruments.end()) {
 				instruments.at(code).setPoseMatrix(resultMatrix);
 			}
-
+			/*
 			//this part is only for printing
 			for (int i = 0; i<4; ++i) {
 				for (int j = 0; j<4; ++j) {
@@ -485,6 +487,7 @@ void MarkerTracker::findMarker( cv::Mat &img_bgr, float resultMatrix[16], unorde
 				std::cout << "\n";
 			}
 			std::cout << "\n";
+			*/
 			float x,y,z;
 			x = resultMatrix[3];
 			y = resultMatrix[7];
