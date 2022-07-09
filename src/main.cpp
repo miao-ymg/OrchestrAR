@@ -140,7 +140,7 @@ void initGL(int argc, char *argv[]) {
 	glEnable(GL_LIGHT0);
 }
 
-void display(GLFWwindow* window, const cv::Mat &img_bgr, vector<std::array<float, 16> > &resultMatrices) {
+void display(GLFWwindow* window, const cv::Mat &img_bgr, vector<Instrument> &visibleInstruments) {
 
 // Added in Exercise 8 - Start *****************************************************************
 
@@ -190,17 +190,19 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, vector<std::array<float
 	// Move to marker-position
 	glMatrixMode(GL_MODELVIEW);
 
-	for (auto& resultMatrix : resultMatrices) {
+	for (auto& instr : visibleInstruments) {
 		
 		// Sadly doesn't work for Windows -> so we made own solution!
 		//glLoadTransposeMatrixf(resultMatrix);
+
+		std::array<float, 16> poseMatrix = instr.getPoseMatrix();
 
 		// -> Transpose the Modelview Matrix
 		float resultTransposedMatrix[16];
 		for (int x=0; x<4; ++x) {
 			for (int y=0; y<4; ++y) {
 				// Change columns to rows
-				resultTransposedMatrix[x*4+y] = resultMatrix[y*4+x];
+				resultTransposedMatrix[x*4+y] = poseMatrix[y*4+x];
 			}
 		}
 
@@ -216,7 +218,28 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, vector<std::array<float
 
 		glRotatef(angle, 0, 0, 1);
 
-		drawCircle(1, 16);
+		// Make alpha value depending on volume (between 0 and 1)
+		// float alpha = (float) instr.getVolume() / 128;
+
+		switch (instr.getRole()) {
+			case BASS:
+				glColor4f(0.2, 0.2, 0.2, 1);
+				break;
+			case DRUMS:
+				glColor4f(1.0, 0.0, 0.0, 1);
+				break;
+			case MELODY:
+				glColor4f(0.0, 1.0, 0.0, 1);
+				break;
+			case VOCALS:
+				glColor4f(0.0, 0.0, 1.0, 1);
+				break;
+			default:
+				glColor4f(1.0, 1.0, 1.0, 1);
+				break;
+		}
+
+		drawCircle(1, 6);
 		drawSphere(0.5, 10, 10);
 		// Draw 3 white spheres
 		/*
@@ -270,9 +293,9 @@ void reshape( GLFWwindow* window, int width, int height ) {
 int main(int argc, char* argv[]) {
 
 	// --- Add instrument markers ---
-	instruments.insert(std::make_pair(1680, Instrument(1680, "../Sounds/Melody/130_happyAccordion_melody.wav")));
-	instruments.insert(std::make_pair(626, Instrument(626, "../Sounds/Drums/130_trapDrum_drums.wav")));
-	instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, "../Sounds/Vocals/130_asylumDrill_vocals.wav")));
+	instruments.insert(std::make_pair(1680, Instrument(1680, MELODY, "../Sounds/Melody/130_happyAccordion_melody.wav")));
+	instruments.insert(std::make_pair(626, Instrument(626, DRUMS, "../Sounds/Drums/130_trapDrum_drums.wav")));
+	instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, VOCALS, "../Sounds/Vocals/130_asylumDrill_vocals.wav")));
 	
 
 	GLFWwindow* window;
@@ -354,21 +377,20 @@ int main(int argc, char* argv[]) {
 		// Track a marker and get the pose of the marker
 		markerTracker.findMarker(img_bgr, resultMatrix, instruments, identifiers);
 
-		vector<std::array<float, 16> > resultMatrices;
+		vector<Instrument> visibleInstruments;
 
 		// ---Play sound if markers are present ---
 		for (auto& instr : instruments) {
 			instr.second.toggleSound(identifiers);
 			if (find(identifiers.begin(), identifiers.end(), instr.second.getID()) != identifiers.end()) {
-				resultMatrices.push_back(instr.second.getPoseMatrix());
+				visibleInstruments.push_back(instr.second);
 			}
-			//display(window, img_bgr, instr.second.getPoseMatrix());
 		}
 
 		// glViewport( 0, 0, camera_width, camera_height);
 
 		// Render here
-		display(window, img_bgr, resultMatrices);
+		display(window, img_bgr, visibleInstruments);
 
 		// Swap front and back buffers
 		glfwSwapBuffers(window);

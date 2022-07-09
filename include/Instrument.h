@@ -5,17 +5,29 @@
 #include <SDL_mixer.h>
 
 
+enum Role {BASS, DRUMS, MELODY, VOCALS};
+
 class Instrument {
 public:
     /**
      * Constructor
      */
-    Instrument(const int id, const char* soundPath);
+    Instrument(const int id, Role role, const char* soundPath);
     
     /**
      * Getter for id
      */
     int getID() const;
+
+    /**
+     * Getter for role
+     */
+    Role getRole() const;
+
+    /**
+     * Getter for volume
+     */
+    int getVolume() const;
 
     /**
      * Getter for poseMatrix
@@ -51,6 +63,7 @@ public:
 protected:
     const int id;
     const char* soundPath;
+    const Role role;
 
     Mix_Chunk* sample;
     float poseMatrix[16];
