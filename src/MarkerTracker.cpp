@@ -8,13 +8,14 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-#include "Instrument.h"
-#include "MarkerTracker.h"
-#include "PoseEstimation.h"
+#include "../include/Instrument.h"
+#include "../include/MarkerTracker.h"
+#include "../include/PoseEstimation.h"
+
 
 using namespace cv;
 
-// --- OWN HELPER FUNCTIONS ---
+// --- OWN HELPER FUNCTION(S) ---
 float maxY4(Point2f pts[]) {
 	float max = pts[0].y;
 
@@ -22,6 +23,7 @@ float maxY4(Point2f pts[]) {
 		max = (max >= pts[i].y) ? max : pts[i].y;
 	return max;
 }
+
 
 void trackbarHandler( int pos, void* slider_value ) {
 	*( (int*)slider_value ) = pos;
@@ -429,13 +431,14 @@ void MarkerTracker::findMarker( cv::Mat &img_bgr, float resultMatrix[16], unorde
 				}
 			}
 
+			// --- Set volume depending on marker's height ---
 			float maxY = maxY4(corners);
 			double volume = maxY / img_bgr.rows;
 
 			for (auto& instr : instruments) {
 				if (instr.first == code) {
 					instr.second.setVolume(volume);
-					cout << "vol: " << volume << endl;
+					// cout << "Vol: " << volume << endl;
 					break;
 				}	
 			}
@@ -491,10 +494,8 @@ void MarkerTracker::findMarker( cv::Mat &img_bgr, float resultMatrix[16], unorde
 		} // end of loop over contours
 
 		
-
 		//cv::imshow(kWinName1, img_bgr);
 		//cv::imshow(kWinName2, img_mono);
-
 
 
 		isFirstStripe = true;

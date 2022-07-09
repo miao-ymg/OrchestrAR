@@ -1,10 +1,3 @@
-
-#include <vector>
-#include <algorithm>
-
-#include <SDL.h>
-#include <SDL_mixer.h>
-
 #include "../include/Instrument.h"
 
 
@@ -15,8 +8,18 @@ Instrument::Instrument(const int id, const char* soundPath)
 	soundPath(std::move(soundPath)), id(id) {};
 
 
-int Instrument::getID() const {
-	return id;
+int Instrument::getID() const { return id; }
+
+
+float* Instrument::getPoseMatrix() {
+	float ret[16];
+	memcpy(ret, poseMatrix, sizeof(float) * 16);
+	return ret;
+}
+
+
+void Instrument::setPoseMatrix(float matrix[16]){
+	memcpy(poseMatrix, matrix, sizeof(float) * 16);
 }
 
 
@@ -55,14 +58,4 @@ void Instrument::toggleSound(vector<int>& identifiers) {
 
 void Instrument::freeChunk() {
     Mix_FreeChunk(sample);
-}
-
-void Instrument::setPoseMatrix(float matrix[16]){
-	memcpy(poseMatrix, matrix, sizeof(float) * 16);
-}
-
-float* Instrument::getPoseMatrix() {
-	float ret[16];
-	memcpy(ret, poseMatrix, sizeof(float) * 16);
-	return ret;
 }

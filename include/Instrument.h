@@ -8,19 +8,29 @@
 class Instrument {
 public:
     /**
+     * Constructor
+     */
+    Instrument(const int id, const char* soundPath);
+    
+    /**
      * Getter for id
      */
     int getID() const;
 
     /**
+     * Getter for poseMatrix
+     */
+    float* getPoseMatrix();
+
+    /**
+     * Set pose informationi for this instruments marker
+     */
+    void setPoseMatrix(float matrix[16]);
+
+    /**
      * Map the relative volume to absolute volume
      */
     void setVolume(double volume);
-
-    /**
-     * Constructor
-     */
-    Instrument(const int id, const char* soundPath);
 
     /**
      * Load sound file.
@@ -37,24 +47,13 @@ public:
      */
     void freeChunk();
 
-    /**
-     * Set pose informationi for this instruments marker
-     */
-    void setPoseMatrix(float matrix[16]);
-
-    /**
-     * Getter for pose matrix
-     */
-    float* getPoseMatrix();
-
 
 protected:
     const int id;
     const char* soundPath;
 
     Mix_Chunk* sample;
+    float poseMatrix[16];
     int channel;
     int volume;
-
-    float poseMatrix[16];
 };

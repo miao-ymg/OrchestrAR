@@ -2,4 +2,5 @@
 
 #include "Instrument.h"
 #include "PoseEstimation.h"
-// #include "MarkerTracker.h"
+#include "MarkerTracker.h"
+#include "DrawPrimitives.h"

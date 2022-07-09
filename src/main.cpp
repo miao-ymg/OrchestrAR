@@ -1,35 +1,29 @@
-#include "../include/ownlib.h"
-
-#include "../opencv2/opencv.hpp"
 #include <iostream>
 #include <array>
 #include <unordered_map>
-
 #include <cmath>
-
-#include <SDL.h>
-#include <SDL_mixer.h>
-// #include <cpct_dll.h>
-#include "../include/Instrument.h"
-#include "Instrument.cpp"
-
-#include <GLFW/glfw3.h>
-
-#include "DrawPrimitives.h"
 #include <iomanip>
-
-#include "glext.h"
-
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-#include "PoseEstimation.h"
-#include "MarkerTracker.h"
+#include <GLFW/glfw3.h>
+#include <SDL.h>
+#include <SDL_mixer.h>
+// #include <cpct_dll.h>
+
+#include "glext.h"
+#include "DrawPrimitives.h"
+
+//#include "../opencv2/opencv.hpp"
+//#include "../include/ownlib.h"
+
+#include "Instrument.cpp"
 #include "MarkerTracker.cpp"
 #include "PoseEstimation.cpp"
+
 
 using namespace cv;
 using namespace std;
@@ -41,7 +35,6 @@ using namespace std;
 #define DRAW_RECTANGLE 0
 
 #define THICKNESS_VALUE 4
-
 
 
 // --- Audio properties ---
@@ -57,7 +50,7 @@ int camera_width  = 1280;
 int camera_height = 720; 
 const int virtual_camera_angle = 30;
 
-queue<vector<int> > identifierHistory;
+// queue<vector<int> > identifierHistory;
 unordered_map<int, Instrument> instruments;
 
 /*
@@ -266,7 +259,7 @@ void reshape( GLFWwindow* window, int width, int height ) {
 
 int main(int argc, char* argv[]) {
 
-	// --- Add instrument markers
+	// --- Add instrument markers ---
 	instruments.insert(std::make_pair(1680, Instrument(1680, "../Sounds/Melody/130_latinTrap_guitar.wav")));
 	instruments.insert(std::make_pair(626, Instrument(626, "../Sounds/Drums/130_basicTrap_drums.wav")));
 
@@ -276,7 +269,7 @@ int main(int argc, char* argv[]) {
 	if (!glfwInit())
 		return -1;
 
-	//initialize SDL
+	// --- Initialize SDL ---
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
 		fprintf(stderr, "Unable to initialize SDL: %s\n", SDL_GetError());
 		return 1;
@@ -297,7 +290,7 @@ int main(int argc, char* argv[]) {
 
 	// Initialize the window system
 	// Create a windowed mode window and its OpenGL context
-	window = glfwCreateWindow(camera_width, camera_height, "Exercise 8 - Combine", NULL, NULL);
+	window = glfwCreateWindow(camera_width, camera_height, "OrchestrAR", NULL, NULL);
 	if (!window) {
 		glfwTerminate();
 		return -1;
@@ -370,6 +363,7 @@ int main(int argc, char* argv[]) {
 	for (auto& instr : instruments) {
 		instr.second.freeChunk();
 	}
+
 	Mix_CloseAudio();
 	SDL_Quit();
 
