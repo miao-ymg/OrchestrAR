@@ -302,7 +302,7 @@ int main(int argc, char* argv[]) {
 	instruments.insert(std::make_pair(0x0272, Instrument(0x0272, BEAT, "../Sounds/Beat/130_beat_Trap-Drum-130bpm.wav")));
 	instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, MELODY, "../Sounds/Melody/130_melody_D_Paris-Emotional-Piano-Loop.wav")));
 	// instruments.insert(std::make_pair(0x005a, Instrument(0x005a, VOCAL, "../Sounds/Vocal/130_vocal_D_Emotions.wav")));
-	
+
 	/*
 	// --- Orchestra 2 ---
 	instruments.insert(std::make_pair(0x0690, Instrument(0x0690, BASS, "../Sounds/Bass/130_bass_Em_LilTecca-LilMosey-Type-Melody-Part-4.wav")));
