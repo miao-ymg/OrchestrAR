@@ -223,16 +223,19 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, vector<Instrument> &vis
 
 		switch (instr.getRole()) {
 			case BASS:
-				glColor4f(0.2, 0.2, 0.2, 1);
-				break;
-			case DRUMS:
 				glColor4f(1.0, 0.0, 0.0, 1);
 				break;
-			case MELODY:
+			case BEAT:
 				glColor4f(0.0, 1.0, 0.0, 1);
 				break;
-			case VOCALS:
+			case KEYS:
+				glColor4f(0.0, 0.5, 0.5, 1);
+				break;
+			case MELODY:
 				glColor4f(0.0, 0.0, 1.0, 1);
+				break;
+			case VOCAL:
+				glColor4f(1.0, 1.0, 0.0, 1);
 				break;
 			default:
 				glColor4f(1.0, 1.0, 1.0, 1);
@@ -293,10 +296,19 @@ void reshape( GLFWwindow* window, int width, int height ) {
 int main(int argc, char* argv[]) {
 
 	// --- Add instrument markers ---
-	instruments.insert(std::make_pair(1680, Instrument(1680, MELODY, "../Sounds/Melody/130_happyAccordion_melody.wav")));
-	instruments.insert(std::make_pair(626, Instrument(626, DRUMS, "../Sounds/Drums/130_trapDrum_drums.wav")));
-	instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, VOCALS, "../Sounds/Vocals/130_asylumDrill_vocals.wav")));
 	
+	// --- Orchestra 1 ---
+	instruments.insert(std::make_pair(0x0690, Instrument(0x0690, BASS, "../Sounds/Bass/130_bass_Bm_Ridem-Cowgirl-Mid-Bass.wav")));
+	instruments.insert(std::make_pair(0x0272, Instrument(0x0272, BEAT, "../Sounds/Beat/130_beat_Trap-Drum-130bpm.wav")));
+	instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, MELODY, "../Sounds/Melody/130_melody_D_Paris-Emotional-Piano-Loop.wav")));
+	// instruments.insert(std::make_pair(0x005a, Instrument(0x005a, VOCAL, "../Sounds/Vocal/130_vocal_D_Emotions.wav")));
+	
+	/*
+	// --- Orchestra 2 ---
+	instruments.insert(std::make_pair(0x0690, Instrument(0x0690, BASS, "../Sounds/Bass/130_bass_Em_LilTecca-LilMosey-Type-Melody-Part-4.wav")));
+	instruments.insert(std::make_pair(0x0272, Instrument(0x0272, BEAT, "../Sounds/Beat/130_beat_Trap-Drum-130bpm.wav")));
+	instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, MELODY, "../Sounds/Melody/130_melody_Em_Piano-YXNG-SXN.wav")));
+	*/
 
 	GLFWwindow* window;
 

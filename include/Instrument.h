@@ -5,7 +5,7 @@
 #include <SDL_mixer.h>
 
 
-enum Role {BASS, DRUMS, MELODY, VOCALS};
+enum Role { BASS, BEAT, KEYS, MELODY, VOCAL };
 
 class Instrument {
 public:
