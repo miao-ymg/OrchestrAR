@@ -50,6 +50,11 @@ public:
     void loadSound();
 
     /**
+     * Load random sound file.
+     */
+    void loadRandomSound(Role role);
+
+    /**
      * Play the sound in an endless loop
      */
     void toggleSound(std::vector<int>& identifiers);
@@ -58,6 +63,9 @@ public:
      * Free the memory space occupied by the music chunk.
      */
     void freeChunk();
+
+
+    void drawObject();
 
 
 protected:

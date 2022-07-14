@@ -26,6 +26,7 @@
 #include "PoseEstimation.cpp"
 
 
+
 using namespace cv;
 using namespace std;
 
@@ -52,28 +53,8 @@ int camera_height = 720;
 const int virtual_camera_angle = 30;
 
 // queue<vector<int> > identifierHistory;
-unordered_map<int, Instrument> instruments;
+unordered_map<int, Instrument > instruments;
 
-/*
-int initSDL() {
-	//initialize SDL
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
-		fprintf(stderr, "Unable to initialize SDL: %s\n", SDL_GetError());
-		return 1;
-	}
-	if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) != 0) {
-		fprintf(stderr, "Unable to initialize audio: %s\n", Mix_GetError());
-		return 1;
-	}
-
-	// --- Load sound files ---
-	for (auto& instr : instruments) {
-		instr.second.loadSound();
-	}
-
-	return 0;
-}
-*/
 
 void initVideoStream(cv::VideoCapture &cap) {
 	if(cap.isOpened())
@@ -241,33 +222,7 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, vector<Instrument> &vis
 				glColor4f(1.0, 1.0, 1.0, 1);
 				break;
 		}
-
-		drawCircle(1, 6);
-		drawSphere(0.5, 10, 10);
-		// Draw 3 white spheres
-		/*
-		glColor4f(1.0, 1.0, 1.0, 1.0);
-		drawSphere(0.8, 10, 10);
-		glTranslatef(0.0, 0.8, 0.0);
-		drawSphere(0.6, 10, 10);
-		glTranslatef(0.0, 0.6, 0.0);
-		drawSphere(0.4, 10, 10);
-
-		// Draw the eyes
-		glPushMatrix();
-		glColor4f(0.0, 0.0, 0.0, 1.0);
-		glTranslatef(0.2, 0.2, 0.2);
-		drawSphere(0.066, 10, 10);
-		glTranslatef(0, 0, -0.4);
-		drawSphere(0.066, 10, 10);
-		glPopMatrix();
-
-		// Draw a nose
-		glColor4f(1.0, 0.5, 0.0, 1.0);
-		glTranslatef(0.3, 0.0, 0.0);
-		glRotatef(90, 0, 1, 0);
-		drawCone(0.1, 0.3, 10, 10);
-		*/
+		instr.drawObject();		
 	}
 }
 
@@ -296,20 +251,23 @@ void reshape( GLFWwindow* window, int width, int height ) {
 int main(int argc, char* argv[]) {
 
 	// --- Add instrument markers ---
+	bool toggle = false;
+
+	if (toggle) {
+		// --- Orchestra 1 ---
+		instruments.insert(std::make_pair(0x0690, Instrument(0x0690, BASS, "../Sounds/Bass/130_bass_Bm_Ridem-Cowgirl-Mid-Bass.wav")));
+		instruments.insert(std::make_pair(0x005a, Instrument(0x005a, BEAT, "../Sounds/Beat/130_beat_Trap-Drum-130bpm.wav")));
+		// instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, KEYS, "../Sounds/Keys/130_keys_G_FIRST-SIGHT-Emotional-Piano-Loop.wav")));
+		instruments.insert(std::make_pair(0x0272, Instrument(0x0272, MELODY, "../Sounds/Melody/130_melody_D_Paris-Emotional-Piano-Loop.wav")));
+	} else {
+		// --- Orchestra 2 ---
+		instruments.insert(std::make_pair(0x0690, Instrument(0x0690, BASS, "../Sounds/Bass/130_bass_Em_LilTecca-LilMosey-Type-Melody-Part-4.wav")));
+		instruments.insert(std::make_pair(0x005a, Instrument(0x005a, BEAT, "../Sounds/Beat/130_beat_Trap-Drum-130bpm.wav")));
+		// instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, KEYS, "../Sounds/Keys/130_keys_C_Southside-X-Pyrex-Type-Keys-Flute.wav")));
+		instruments.insert(std::make_pair(0x0272, Instrument(0x0272, MELODY, "../Sounds/Melody/130_melody_Em_Piano-YXNG-SXN.wav")));
+	}
 	
-	// --- Orchestra 1 ---
-	instruments.insert(std::make_pair(0x0690, Instrument(0x0690, BASS, "../Sounds/Bass/130_bass_Bm_Ridem-Cowgirl-Mid-Bass.wav")));
-	instruments.insert(std::make_pair(0x0272, Instrument(0x0272, BEAT, "../Sounds/Beat/130_beat_Trap-Drum-130bpm.wav")));
-	instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, MELODY, "../Sounds/Melody/130_melody_D_Paris-Emotional-Piano-Loop.wav")));
-	// instruments.insert(std::make_pair(0x005a, Instrument(0x005a, VOCAL, "../Sounds/Vocal/130_vocal_D_Emotions.wav")));
-
-	/*
-	// --- Orchestra 2 ---
-	instruments.insert(std::make_pair(0x0690, Instrument(0x0690, BASS, "../Sounds/Bass/130_bass_Em_LilTecca-LilMosey-Type-Melody-Part-4.wav")));
-	instruments.insert(std::make_pair(0x0272, Instrument(0x0272, BEAT, "../Sounds/Beat/130_beat_Trap-Drum-130bpm.wav")));
-	instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, MELODY, "../Sounds/Melody/130_melody_Em_Piano-YXNG-SXN.wav")));
-	*/
-
+	
 	GLFWwindow* window;
 
 	// Initialize the library
@@ -328,7 +286,7 @@ int main(int argc, char* argv[]) {
 
 	// --- Load sound files ---
 	for (auto& instr : instruments) {
-		instr.second.loadSound();
+		instr.second.loadRandomSound(instr.second.getRole());
 	}
 
 	// const GLFWvidmode* mode = glfwGetVideoMode(NULL);

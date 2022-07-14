@@ -1,0 +1,230 @@
+{
+	"inputs" : 
+	[
+		{
+			"path" : "CMakeLists.txt"
+		},
+		{
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/CMakeFiles/3.22.3/CMakeSystem.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/CMakeSystemSpecificInitialize.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/Platform/Darwin-Initialize.cmake"
+		},
+		{
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/CMakeFiles/3.22.3/CMakeCCompiler.cmake"
+		},
+		{
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/CMakeFiles/3.22.3/CMakeCXXCompiler.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/CMakeSystemSpecificInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/CMakeGenericSystem.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/CMakeInitializeConfigs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/Platform/Darwin.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/Platform/UnixPaths.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/CMakeCInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/CMakeLanguageInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/Compiler/GNU-C.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/Platform/Apple-GNU-C.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/Platform/Apple-GNU.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/CMakeCommonLanguageInclude.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/CMakeCXXInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/CMakeLanguageInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/Compiler/GNU-CXX.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/Platform/Apple-GNU-CXX.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/Platform/Apple-GNU.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/CMakeCommonLanguageInclude.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/usr/local/share/OpenCV/OpenCVConfig-version.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/usr/local/share/OpenCV/OpenCVConfig.cmake"
+		},
+		{
+			"path" : "cmake-modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"path" : "cmake-modules/FindPackageMessage.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/usr/local/share/OpenCV/OpenCVModules.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/usr/local/share/OpenCV/OpenCVModules-release.cmake"
+		},
+		{
+			"path" : "cmake-modules/FindOpenGL.cmake"
+		},
+		{
+			"path" : "cmake-modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"path" : "cmake-modules/FindPackageMessage.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/FindGLEW.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.22/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/usr/local/lib/cmake/glew/glew-config.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/usr/local/lib/cmake/glew/glew-targets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/usr/local/lib/cmake/glew/glew-targets-release.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/usr/local/lib/cmake/glew/CopyImportedTargetProperties.cmake"
+		},
+		{
+			"path" : "cmake-modules/FindSDL2.cmake"
+		},
+		{
+			"path" : "cmake-modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"path" : "cmake-modules/FindPackageMessage.cmake"
+		},
+		{
+			"path" : "cmake-modules/FindSDL2_mixer.cmake"
+		},
+		{
+			"path" : "cmake-modules/FindSDL2.cmake"
+		},
+		{
+			"path" : "cmake-modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"path" : "cmake-modules/FindPackageMessage.cmake"
+		},
+		{
+			"path" : "cmake-modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"path" : "cmake-modules/FindPackageMessage.cmake"
+		}
+	],
+	"kind" : "cmakeFiles",
+	"paths" : 
+	{
+		"build" : "/Users/sam/Desktop/OrchestrAR/cmake-build-debug",
+		"source" : "/Users/sam/Desktop/OrchestrAR"
+	},
+	"version" : 
+	{
+		"major" : 1,
+		"minor" : 0
+	}
+}

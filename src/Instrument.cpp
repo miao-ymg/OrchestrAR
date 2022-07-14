@@ -1,5 +1,7 @@
 #include "../include/Instrument.h"
 
+#include <random>
+//#include "DrawPrimitives.h"
 
 using namespace std;
 
@@ -51,6 +53,9 @@ void Instrument::loadSound() {
 	Mix_Volume(channel, 0);
 }
 
+void Instrument::loadRandomSound(Role role) {
+	loadSound();
+}
 
 void Instrument::toggleSound(vector<int>& identifiers) {
     if (find(identifiers.begin(), identifiers.end(), id) != identifiers.end()) {
@@ -67,6 +72,10 @@ void Instrument::toggleSound(vector<int>& identifiers) {
         Mix_PlayChannel(channel, sample, 0);
 }
 
+void Instrument::drawObject(){
+	drawSphere(0.5, 10, 10);
+	drawCircle(1, 100);
+}
 
 void Instrument::freeChunk() {
     Mix_FreeChunk(sample);

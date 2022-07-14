@@ -1,0 +1,4 @@
+/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_C_COMPILER=/usr/local/bin/gcc -DCMAKE_CXX_COMPILER=/usr/local/bin/g++ -S /Users/sam/Desktop/OrchestrAR -B /Users/sam/Desktop/OrchestrAR/cmake-build-debug
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/sam/Desktop/OrchestrAR/cmake-build-debug
