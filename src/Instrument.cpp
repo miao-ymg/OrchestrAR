@@ -60,7 +60,6 @@ void Instrument::loadRandomSound(Role role) {
 void Instrument::toggleSound(vector<int>& identifiers) {
     if (find(identifiers.begin(), identifiers.end(), id) != identifiers.end()) {
 		Mix_Volume(channel, volume);
-		// std::cout << "Vol: " << volume << std::endl;
 	} else {
 		--timeToLive;
 		if (timeToLive == 0)
@@ -72,9 +71,83 @@ void Instrument::toggleSound(vector<int>& identifiers) {
         Mix_PlayChannel(channel, sample, 0);
 }
 
+
 void Instrument::drawObject(){
-	drawSphere(0.5, 10, 10);
-	drawCircle(1, 100);
+	glTranslatef(0, 0, 0.1);
+	// Make alpha value depending on volume (between 0 and 1)
+	// float alpha = (float) instr.getVolume() / 128;
+	float alpha = 1;
+	float r, g, b;
+	switch (role) {
+		case BASS:
+			r = 1.0;
+			g = 0.3;
+			b = 0.0;
+			break;
+		case BEAT:
+			r = 0;
+			g = 1;
+			b = 0;
+			break;
+		case KEYS:
+			r = 0;
+			g = 0.5;
+			b = 0.5;
+			break;
+		case MELODY:
+			r = 0;
+			g = 0;
+			b = 1;
+			break;
+		case VOCAL:
+			r = 0;
+			g = 1;
+			b = 0;
+			break;
+		default:
+			r = 0;
+			g = 1;
+			b = 1;
+			break;
+	}
+	glColor4f(r, g, b, alpha);
+
+	float drumWidth = 0.5;
+	float drumHeight = 0.5;
+
+	switch (role) {
+		case BASS:
+			break;
+		case BEAT:
+			for (size_t i = 0; i < 6; i++) {
+				glTranslatef(drumWidth * 2 * M_PI * sin(i) / 6, drumWidth * 2 * M_PI * cos(i) / 6, 0);
+				drawCylinder(0.03, 0.7, 1, 1, 1);
+				glTranslatef(drumWidth * -2 * M_PI * sin(i) / 6, drumWidth * -2 * M_PI * cos(i) / 6, 0);
+			}
+			// Drum shell
+			glTranslatef(0, 0, 0.2);
+			drawCylinder(drumWidth, drumHeight, r, g, b);
+			// Drum skin
+			glTranslatef(0, 0, drumHeight - 0.04);
+			drawCylinder(drumWidth + 0.05, 0.05, 1, 1, 1);
+			break;
+		case KEYS:
+			break;
+		case MELODY:
+			break;
+		case VOCAL:
+			glRotatef(15, 1, 0, 0);
+			drawCylinder(0.15, 1.5, r, g, b);
+			glTranslatef(0, 0, 1.4);
+			drawCylinder(0.3, 0.04, r, g, b);
+			glColor4f(0.2, 0.2, 0.2, alpha);
+			drawSphere(0.3, 10, 10);
+			glTranslatef(0, 0, -2);
+			break;
+		default:
+			break;
+	}
+	
 }
 
 void Instrument::freeChunk() {

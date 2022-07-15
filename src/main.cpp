@@ -114,11 +114,13 @@ void initGL(int argc, char *argv[]) {
     GLfloat light_dif[] = {0.7, 0.7, 0.7, 1.0};
 
 	// Enable lighting
+	/*
 	glLightfv(GL_LIGHT0, GL_AMBIENT, light_amb);
 	glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE,  light_dif);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
+	*/
 }
 
 void display(GLFWwindow* window, const cv::Mat &img_bgr, vector<Instrument> &visibleInstruments) {
@@ -190,8 +192,8 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, vector<Instrument> &vis
 		// Load the transpose matrix
 		glLoadMatrixf(resultTransposedMatrix);
 		
-		// Rotate 90 desgress in x-direction
 		glRotatef(-90, 0, 0, 1);
+		glRotatef(180, 1, 0, 0);
 		// Scale down!
 		glScalef(0.03, 0.03, 0.03);
 
@@ -199,30 +201,7 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, vector<Instrument> &vis
 
 		glRotatef(angle, 0, 0, 1);
 
-		// Make alpha value depending on volume (between 0 and 1)
-		// float alpha = (float) instr.getVolume() / 128;
-
-		switch (instr.getRole()) {
-			case BASS:
-				glColor4f(1.0, 0.0, 0.0, 1);
-				break;
-			case BEAT:
-				glColor4f(0.0, 1.0, 0.0, 1);
-				break;
-			case KEYS:
-				glColor4f(0.0, 0.5, 0.5, 1);
-				break;
-			case MELODY:
-				glColor4f(0.0, 0.0, 1.0, 1);
-				break;
-			case VOCAL:
-				glColor4f(1.0, 1.0, 0.0, 1);
-				break;
-			default:
-				glColor4f(1.0, 1.0, 1.0, 1);
-				break;
-		}
-		instr.drawObject();		
+		instr.drawObject();
 	}
 }
 
@@ -251,7 +230,7 @@ void reshape( GLFWwindow* window, int width, int height ) {
 int main(int argc, char* argv[]) {
 
 	// --- Add instrument markers ---
-	bool toggle = false;
+	bool toggle = true;
 
 	if (toggle) {
 		// --- Orchestra 1 ---
@@ -295,7 +274,7 @@ int main(int argc, char* argv[]) {
 
 	// Initialize the window system
 	// Create a windowed mode window and its OpenGL context
-	window = glfwCreateWindow(camera_width, camera_height, "OrchestrAR", NULL, NULL);
+	window = glfwCreateWindow(640, 360, "OrchestrAR", NULL, NULL);
 	if (!window) {
 		glfwTerminate();
 		return -1;
