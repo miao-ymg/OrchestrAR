@@ -9,6 +9,8 @@
 #define M_PI 3.1415926535897932384626433832795
 #endif
 
+enum alignment{XY, XZ, YZ};
+
 
 void drawSphere(double r, int lats, int longs) {
 	int i, j;
@@ -59,7 +61,7 @@ void drawCone(GLdouble base, GLdouble height, GLint slices, GLint stacks) {
 }
 
 
-void drawCircle(float r, int segments) {
+void drawCircle(GLfloat r, int segments) {
 	glBegin(GL_TRIANGLE_FAN);
 	glVertex3f(0, 0, 0);
 	for (size_t n = 0; n <= segments; ++n) {
@@ -70,17 +72,36 @@ void drawCircle(float r, int segments) {
 }
 
 
-void drawRectangle(float x1, float z1, float x2, float z2) {
-	glBegin(GL_QUADS);
-	glVertex3f(x1, 0, z1);
-	glVertex3f(x1, 0, z2);
-	glVertex3f(x2, 0, z2);
-	glVertex3f(x2, 0, z1);
+void drawAlignedRectangle(GLfloat a1, GLfloat b1, GLfloat a2, GLfloat b2, alignment al) {
+    glBegin(GL_QUADS);
+	switch (al) {
+		case XY:
+			glVertex3f(a1, b1, 0);
+			glVertex3f(a1, b2, 0);
+			glVertex3f(a2, b2, 0);
+			glVertex3f(a2, b1, 0);
+			break;
+		case XZ:
+			glVertex3f(a1, 0, b1);
+			glVertex3f(a1, 0, b2);
+			glVertex3f(a2, 0, b2);
+			glVertex3f(a2, 0, b1);
+			break;
+		case YZ:
+			glVertex3f(0, a1, b1);
+			glVertex3f(0, a1, b2);
+			glVertex3f(0, a2, b2);
+			glVertex3f(0, a2, b1);
+			break;
+		default:
+			throw std::invalid_argument("ERROR: Invalid alignment!");
+			break;
+	}
 	glEnd();
 }
 
 
-void drawCylinder(GLfloat radius, GLfloat height, GLubyte R, GLubyte G, GLubyte B) {
+void drawCylinder(GLfloat radius, GLfloat height, GLfloat R, GLfloat G, GLfloat B) {
     GLfloat x = 0.0;
     GLfloat y = 0.0;
     GLfloat angle = 30;
@@ -108,6 +129,7 @@ void drawCylinder(GLfloat radius, GLfloat height, GLubyte R, GLubyte G, GLubyte 
         while( angle < 2*M_PI ) {
             x = radius * cos(angle);
             y = radius * sin(angle);
+			glVertex3f(x, y , 0);
             glVertex3f(x, y , height);
             angle = angle + angle_stepsize;
         }
@@ -115,7 +137,7 @@ void drawCylinder(GLfloat radius, GLfloat height, GLubyte R, GLubyte G, GLubyte 
     glEnd();
 }
 
-void drawEllipse(float rx, float ry, int num_segments) { 
+void drawEllipse(GLfloat rx, GLfloat ry, int num_segments) { 
     float theta = 2 * M_PI / float(num_segments); 
     float c = cosf(theta);//precalculate the sine and cosine
     float s = sinf(theta);
@@ -142,5 +164,97 @@ void drawMusicNote() {
 	glRotatef(-25, 0, 1, 0);
     drawEllipse(0.14, 0.1, 32);
     glRotatef(25, 0, 1, 0);
-    drawRectangle(0.1, 0, 0.13, 0.7);
+    drawAlignedRectangle(0.09, 0.0, 0.135, 0.7, XZ);
+}
+
+void drawCuboid(GLfloat l, GLfloat w, GLfloat h, GLfloat R, GLfloat G, GLfloat B) {
+	glColor4f(R, G, B, 1);
+    glBegin(GL_QUADS);
+	//bottom
+	drawAlignedRectangle(-l/2, -w/2, l/2, w/2, XY);
+	glPushMatrix();
+	//sides
+	glColor4f(R - 0.1, G - 0.1, B - 0.1, 1);
+	glTranslatef(0, w/2, 0);
+	drawAlignedRectangle(-l/2, 0, l/2, h, XZ);
+	glTranslatef(0, -w, 0);
+	drawAlignedRectangle(l/2, 0, -l/2, h, XZ);
+	glTranslatef(0, w/2, 0);
+
+	glRotatef(90, 0, 0, 1);
+	glTranslatef(0, l/2, 0);
+	drawAlignedRectangle(w/2, 0, -w/2, h, XZ);
+	glTranslatef(0, -l, 0);
+	drawAlignedRectangle(w/2, 0, -w/2, h, XZ);
+
+	//top
+	glColor4f(R, G, B, 1);
+	glPopMatrix();
+	glTranslatef(0, 0, h);
+	drawAlignedRectangle(l/2, -w/2, -l/2, w/2, XY);
+	glEnd();
+}
+
+void drawSpeakers(GLfloat l, GLfloat w, GLfloat h, GLfloat R, GLfloat G, GLfloat B){
+	glPushMatrix();
+	drawCuboid(l, w, h, R, G, B);
+	glPopMatrix();
+	//membranes 1 and 2, 1 half the size of 2
+	GLfloat r1 = fmin(w/2, h/4) * 0.9;
+	GLfloat r2 = fmin((r1/2) * 1.2, h/4);
+
+	//membrane radius is periodic
+	float sizeFactor = 0.95 + (sin(12*glfwGetTime()) * 0.05);
+	float r1_ = r1 * sizeFactor;
+	float r2_ = r2 * sizeFactor;
+
+	GLfloat z1 = r1;
+	GLfloat z2 = h/2 + r2;
+
+	glColor4f(0.0, 0.0, 0.0, 1.0);
+	glTranslatef(0, l/2, 0);
+	glTranslatef(0, 0, z1);
+	glRotatef(90, -1, 0, 0);
+	drawCylinder(r1_, 0.02, 1, 1, 1);
+	glTranslatef(0, -1*(2*r1 + r2), 0);
+	drawCylinder(r2_, 0.02, 1, 1, 1);
+}
+
+void drawPianoKeys(GLfloat l, GLfloat w, GLfloat h){
+	float r = 1.0;
+	float g = 1.0;
+	float b = 1.0;
+
+	//black keys are smaller
+	GLfloat bLen = l * 0.8;
+	GLfloat bWid = w * 0.5;
+
+	//lower white row
+	glPushMatrix();
+	drawCuboid(l, w, h, r, g, b);
+	glPopMatrix();
+	glPushMatrix();
+	glTranslatef(0, w+0.01, 0);
+	drawCuboid(l, w, h, r, g, b);
+	glPopMatrix();
+	glPushMatrix();
+	glTranslatef(0, -w-0.01, 0);
+	drawCuboid(l, w, h, r, g, b);
+	glPopMatrix();
+
+	r = 0.1;
+	g = 0.1;
+	b = 0.1;
+
+	//upper black row
+	glTranslatef(l * 0.2, 0, h*0.5);
+	glPushMatrix();
+	glTranslatef(0, w*0.5, 0);
+	drawCuboid(bLen, bWid, h, r, g, b);
+	glPopMatrix();
+	glPushMatrix();
+	glTranslatef(0, -w*0.5, 0);
+	drawCuboid(bLen, bWid, h, r, g, b);
+	glPopMatrix();
+
 }

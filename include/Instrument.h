@@ -7,12 +7,18 @@
 
 enum Role { BASS, BEAT, KEYS, MELODY, VOCAL };
 
+enum Pitch {C, Em, G, Bm, D, FHm,
+            A, CHm, E, GHm, B, DHm,
+            FH, AHm, CH, Fm, Ab, Cm,
+            Eb, Gm, Bb, Dm, F, Am,
+            None };
+
 class Instrument {
 public:
     /**
      * Constructor
      */
-    Instrument(const int id, Role role, const char* soundPath);
+    Instrument(const int id, Role role, Pitch pitch, const char* soundPath);
     
     /**
      * Getter for id
@@ -23,6 +29,11 @@ public:
      * Getter for role
      */
     Role getRole() const;
+
+    /**
+     * Getter for key
+     */
+    Pitch getPitch() const;
 
     /**
      * Getter for volume
@@ -68,10 +79,13 @@ public:
     void drawObject();
 
 
+    std::array<float, 3> setColor();
+
 protected:
     const int id;
     const char* soundPath;
     const Role role;
+    const Pitch pitch;
 
     Mix_Chunk* sample;
     float poseMatrix[16];

@@ -127,7 +127,11 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, vector<Instrument> &vis
 
 // Added in Exercise 8 - Start *****************************************************************
 
-	const float degreePerSec = 90.0f;
+	const float degreePerSec = 60.0f;
+
+	//models "jump"
+	float height = abs(sin((float)glfwGetTime() * 3)) * 0.3;
+
 
 	const float angle = (float) glfwGetTime() * degreePerSec;
 
@@ -201,6 +205,8 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, vector<Instrument> &vis
 
 		glRotatef(angle, 0, 0, 1);
 
+		glTranslatef(0,0,height);
+
 		instr.drawObject();
 	}
 }
@@ -230,23 +236,26 @@ void reshape( GLFWwindow* window, int width, int height ) {
 int main(int argc, char* argv[]) {
 
 	// --- Add instrument markers ---
-	bool toggle = false;
+	bool toggle = true;
 
 	if (toggle) {
 		// --- Orchestra 1 ---
-		instruments.insert(std::make_pair(0x0690, Instrument(0x0690, BASS, "../Sounds/Bass/130_bass_Bm_Ridem-Cowgirl-Mid-Bass.wav")));
-		instruments.insert(std::make_pair(0x005a, Instrument(0x005a, BEAT, "../Sounds/Beat/130_beat_Trap-Drum-130bpm.wav")));
+		instruments.insert(std::make_pair(0x0690, Instrument(0x0690, BASS, Bm, "../Sounds/Bass/130_bass_Bm_Ridem-Cowgirl-Mid-Bass.wav")));
+		instruments.insert(std::make_pair(0x005a, Instrument(0x005a, BEAT, None, "../Sounds/Beat/130_beat_Trap-Drum-130bpm.wav")));
 		// instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, KEYS, "../Sounds/Keys/130_keys_G_FIRST-SIGHT-Emotional-Piano-Loop.wav")));
-		instruments.insert(std::make_pair(0x0272, Instrument(0x0272, MELODY, "../Sounds/Melody/130_melody_D_Paris-Emotional-Piano-Loop.wav")));
+		instruments.insert(std::make_pair(0x0b44, Instrument(0x0b44, MELODY, Am, "../Sounds/Melody/130_melody_Am_Spanish-X-Latin-Trap-Guitar-Escobar.wav")));
+		instruments.insert(std::make_pair(0x02c2, Instrument(0x02c2, MELODY, CHm, "../Sounds/Melody/130_melody_C#m_Happy-Acordion.wav")));
+		instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, KEYS, C, "../Sounds/Keys/looperman-l-4997013-0291565-beautiful-keys.wav")));
+		instruments.insert(std::make_pair(0x1228, Instrument(0x1228, VOCAL, B, "../Sounds/Vocal/looperman-l-3146001-0269962-vert-lil-uzi-vert-x-matt-ox-by-bully-part-1.wav")));
+		
 	} else {
 		// --- Orchestra 2 ---
-		instruments.insert(std::make_pair(0x0690, Instrument(0x0690, BASS, "../Sounds/Bass/130_bass_Em_LilTecca-LilMosey-Type-Melody-Part-4.wav")));
-		instruments.insert(std::make_pair(0x005a, Instrument(0x005a, BEAT, "../Sounds/Beat/130_beat_Trap-Drum-130bpm.wav")));
-		instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, KEYS, "../Sounds/Keys/130_keys_Em_Fire-Nylon-Guitar.wav")));
-		instruments.insert(std::make_pair(0x0272, Instrument(0x0272, MELODY, "../Sounds/Melody/130_melody_Em_Piano-YXNG-SXN.wav")));
+		instruments.insert(std::make_pair(0x0690, Instrument(0x0690, BASS, Em, "../Sounds/Bass/130_bass_Em_LilTecca-LilMosey-Type-Melody-Part-4.wav")));
+		instruments.insert(std::make_pair(0x005a, Instrument(0x005a, BEAT, None, "../Sounds/Beat/130_beat_Trap-Drum-130bpm.wav")));
+		instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, KEYS, Em, "../Sounds/Keys/130_keys_Em_Duel-Of-The-Fates-I-String-Staccato.wav")));
+		instruments.insert(std::make_pair(0x0272, Instrument(0x0272, MELODY, Em, "../Sounds/Melody/130_melody_Em_Piano-YXNG-SXN.wav")));
 		//instruments.insert(std::make_pair(0x0272, Instrument(0x0272, MELODY, "../Sounds/Melody/130_melody_Em_Gunna-Money-Man-BROKEN-By-Danil040.wav")));
 	}
-	
 	
 	GLFWwindow* window;
 

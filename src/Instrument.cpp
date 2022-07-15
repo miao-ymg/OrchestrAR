@@ -1,21 +1,30 @@
 #include "../include/Instrument.h"
+#include <math.h>
 
 #include <random>
 //#include "DrawPrimitives.h"
+
+/* PI */
+#ifndef M_PI
+#define M_PI 3.1415926535897932384626433832795
+#endif
 
 using namespace std;
 
 const int MUSIC_STOP_DELAY = 16;
 
-Instrument::Instrument(const int id, Role role, const char* soundPath) 
+Instrument::Instrument(const int id, Role role, Pitch pitch, const char* soundPath) 
 	: 
-	soundPath(std::move(soundPath)), id(id), timeToLive(MUSIC_STOP_DELAY), role(role) {};
+	soundPath(std::move(soundPath)), id(id), timeToLive(MUSIC_STOP_DELAY), role(role), pitch(pitch) {};
 
 
 int Instrument::getID() const { return id; }
 
 
 Role Instrument::getRole() const { return role; }
+
+
+Pitch Instrument::getPitch() const { return pitch; }
 
 
 int Instrument::getVolume() const { return volume; }
@@ -77,10 +86,11 @@ void Instrument::drawObject(){
 	// Make alpha value depending on volume (between 0 and 1)
 	// float alpha = (float) instr.getVolume() / 128;
 	float alpha = 1;
+	/*
 	float r, g, b;
 	switch (role) {
 		case BASS:
-			r = 1; g = 1; b = 1;
+			r = 0.5; g = 0.5; b = 0.5;
 			break;
 		case BEAT:
 			r = 0; g = 1; b = 0;
@@ -98,6 +108,11 @@ void Instrument::drawObject(){
 			r = 0; g = 1; b = 1;
 			break;
 	}
+	*/
+	std::array<float, 3> rgb = setColor();
+	float r = rgb[0];
+	float g = rgb[1];
+	float b = rgb[2];
 	glColor4f(r, g, b, alpha);
 
 	float drumWidth = 0.5;
@@ -105,6 +120,7 @@ void Instrument::drawObject(){
 
 	switch (role) {
 		case BASS:
+			drawSpeakers(0.5, 0.5, 1, r, g, b);
 			break;
 		case BEAT:
 			for (size_t i = 0; i < 6; i++) {
@@ -116,10 +132,11 @@ void Instrument::drawObject(){
 			glTranslatef(0, 0, 0.2);
 			drawCylinder(drumWidth, drumHeight, r, g, b);
 			// Drum skin
-			glTranslatef(0, 0, drumHeight - 0.04);
+			glTranslatef(0, 0, drumHeight - 0.0);
 			drawCylinder(drumWidth + 0.05, 0.05, 1, 1, 1);
 			break;
 		case KEYS:
+			drawPianoKeys(1, 0.2, 0.15);
 			break;
 		case MELODY:
 			drawMusicNote();
@@ -145,4 +162,15 @@ void Instrument::drawObject(){
 
 void Instrument::freeChunk() {
     Mix_FreeChunk(sample);
+}
+
+std::array<float, 3> Instrument::setColor() {
+	if (pitch >= 24)
+		return {1.0, 25.0/255, 179.0/255};
+
+	float r = 0.5 * (cos(2.0 * M_PI * pitch / 24) + 1);
+	float g = 0.5 * (cos(2.0 * M_PI * (pitch - 8) / 24) + 1);
+	float b = 0.5 * (cos(2.0 * M_PI * (pitch + 8) / 24) + 1);
+
+	return {r, g, b};
 }
