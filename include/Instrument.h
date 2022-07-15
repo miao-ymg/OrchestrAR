@@ -79,8 +79,6 @@ public:
     void drawObject();
 
 
-    std::array<float, 3> setColor();
-
 protected:
     const int id;
     const char* soundPath;

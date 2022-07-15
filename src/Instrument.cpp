@@ -2,7 +2,6 @@
 #include <math.h>
 
 #include <random>
-//#include "DrawPrimitives.h"
 
 /* PI */
 #ifndef M_PI
@@ -83,94 +82,39 @@ void Instrument::toggleSound(vector<int>& identifiers) {
 
 void Instrument::drawObject(){
 	glTranslatef(0, 0, 0.1);
-	// Make alpha value depending on volume (between 0 and 1)
-	// float alpha = (float) instr.getVolume() / 128;
-	float alpha = 1;
-	/*
-	float r, g, b;
-	switch (role) {
-		case BASS:
-			r = 0.5; g = 0.5; b = 0.5;
-			break;
-		case BEAT:
-			r = 0; g = 1; b = 0;
-			break;
-		case KEYS:
-			r = 0; g = 0.5; b = 0.5;
-			break;
-		case MELODY:
-			r = 0; g = 0; b = 1;
-			break;
-		case VOCAL:
-			r = 0; g = 1; b = 0;
-			break;
-		default:
-			r = 0; g = 1; b = 1;
-			break;
-	}
-	*/
-	std::array<float, 3> rgb = setColor();
+	
+	std::array<float, 3> rgb = paintObject(pitch);
 	float r = rgb[0];
 	float g = rgb[1];
 	float b = rgb[2];
-	glColor4f(r, g, b, alpha);
-
-	float drumWidth = 0.5;
-	float drumHeight = 0.5;
+	glColor4f(r, g, b, 1);
 
 	switch (role) {
 		case BASS:
-			drawSpeakers(0.5, 0.5, 1, r, g, b);
+			drawSpeaker(0.5, 0.5, 1, r, g, b);
 			break;
 		case BEAT:
-			for (size_t i = 0; i < 6; i++) {
-				glTranslatef(drumWidth * 2 * M_PI * sin(i) / 6, drumWidth * 2 * M_PI * cos(i) / 6, 0);
-				drawCylinder(0.03, 0.7, 1, 1, 1);
-				glTranslatef(drumWidth * -2 * M_PI * sin(i) / 6, drumWidth * -2 * M_PI * cos(i) / 6, 0);
-			}
-			// Drum shell
-			glTranslatef(0, 0, 0.2);
-			drawCylinder(drumWidth, drumHeight, r, g, b);
-			// Drum skin
-			glTranslatef(0, 0, drumHeight - 0.0);
-			drawCylinder(drumWidth + 0.05, 0.05, 1, 1, 1);
+            drawDrum(0.5, 0.5, r, g, b);
 			break;
 		case KEYS:
-			drawPianoKeys(1, 0.2, 0.15);
+			drawPianoKeys(0.9, 0.25, 0.15, r, g, b);
 			break;
 		case MELODY:
-			drawMusicNote();
+			drawMusicalNote();
 			glTranslatef(0.35, 0, 0.2);
-			drawMusicNote();
+			drawMusicalNote();
 			glTranslatef(-0.7, 0, 0.15);
-			drawMusicNote();
+			drawMusicalNote();
 			break;
 		case VOCAL:
-			glRotatef(15, 1, 0, 0);
-			drawCylinder(0.15, 1.5, r, g, b);
-			glTranslatef(0, 0, 1.4);
-			drawCylinder(0.3, 0.04, r, g, b);
-			glColor4f(0.2, 0.2, 0.2, alpha);
-			drawSphere(0.3, 10, 10);
-			glTranslatef(0, 0, -2);
+            drawMicrophone(r, g, b);
 			break;
 		default:
-			break;
+            throw std::invalid_argument("ERROR: Sample role shouldn't exist!");
 	}
 	
 }
 
 void Instrument::freeChunk() {
     Mix_FreeChunk(sample);
-}
-
-std::array<float, 3> Instrument::setColor() {
-	if (pitch >= 24)
-		return {1.0, 25.0/255, 179.0/255};
-
-	float r = 0.5 * (cos(2.0 * M_PI * pitch / 24) + 1);
-	float g = 0.5 * (cos(2.0 * M_PI * (pitch - 8) / 24) + 1);
-	float b = 0.5 * (cos(2.0 * M_PI * (pitch + 8) / 24) + 1);
-
-	return {r, g, b};
 }

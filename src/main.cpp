@@ -16,7 +16,7 @@
 // #include <cpct_dll.h>
 
 #include "glext.h"
-#include "DrawPrimitives.h"
+#include "DrawObjects.h"
 
 //#include "../opencv2/opencv.hpp"
 //#include "../include/ownlib.h"
@@ -236,26 +236,24 @@ void reshape( GLFWwindow* window, int width, int height ) {
 int main(int argc, char* argv[]) {
 
 	// --- Add instrument markers ---
-	bool toggle = true;
+	bool toggle = false;
 
 	if (toggle) {
 		// --- Orchestra 1 ---
 		instruments.insert(std::make_pair(0x0690, Instrument(0x0690, BASS, Bm, "../Sounds/Bass/130_bass_Bm_Ridem-Cowgirl-Mid-Bass.wav")));
 		instruments.insert(std::make_pair(0x005a, Instrument(0x005a, BEAT, None, "../Sounds/Beat/130_beat_Trap-Drum-130bpm.wav")));
-		// instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, KEYS, "../Sounds/Keys/130_keys_G_FIRST-SIGHT-Emotional-Piano-Loop.wav")));
-		instruments.insert(std::make_pair(0x0b44, Instrument(0x0b44, MELODY, Am, "../Sounds/Melody/130_melody_Am_Spanish-X-Latin-Trap-Guitar-Escobar.wav")));
-		instruments.insert(std::make_pair(0x02c2, Instrument(0x02c2, MELODY, CHm, "../Sounds/Melody/130_melody_C#m_Happy-Acordion.wav")));
-		instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, KEYS, C, "../Sounds/Keys/looperman-l-4997013-0291565-beautiful-keys.wav")));
-		instruments.insert(std::make_pair(0x1228, Instrument(0x1228, VOCAL, B, "../Sounds/Vocal/looperman-l-3146001-0269962-vert-lil-uzi-vert-x-matt-ox-by-bully-part-1.wav")));
-		
+		// instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, KEYS, G, "../Sounds/Keys/130_keys_G_FIRST-SIGHT-Emotional-Piano-Loop.wav")));
+		instruments.insert(std::make_pair(0x0272, Instrument(0x0272, MELODY, D, "../Sounds/Melody/130_melody_D_Paris-Emotional-Piano-Loop.wav")));
 	} else {
 		// --- Orchestra 2 ---
 		instruments.insert(std::make_pair(0x0690, Instrument(0x0690, BASS, Em, "../Sounds/Bass/130_bass_Em_LilTecca-LilMosey-Type-Melody-Part-4.wav")));
 		instruments.insert(std::make_pair(0x005a, Instrument(0x005a, BEAT, None, "../Sounds/Beat/130_beat_Trap-Drum-130bpm.wav")));
 		instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, KEYS, Em, "../Sounds/Keys/130_keys_Em_Duel-Of-The-Fates-I-String-Staccato.wav")));
 		instruments.insert(std::make_pair(0x0272, Instrument(0x0272, MELODY, Em, "../Sounds/Melody/130_melody_Em_Piano-YXNG-SXN.wav")));
-		//instruments.insert(std::make_pair(0x0272, Instrument(0x0272, MELODY, "../Sounds/Melody/130_melody_Em_Gunna-Money-Man-BROKEN-By-Danil040.wav")));
+		instruments.insert(std::make_pair(0x0B44, Instrument(0x0B44, MELODY, Em, "../Sounds/Melody/130_melody_Em_Gunna-Money-Man-BROKEN-By-Danil040.wav")));
+		instruments.insert(std::make_pair(0x1228, Instrument(0x1228, VOCAL, None, "../Sounds/Vocal/looperman-l-3915654-0267034-lovely-vocal.wav")));
 	}
+	
 	
 	GLFWwindow* window;
 
