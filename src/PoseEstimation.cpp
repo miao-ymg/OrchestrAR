@@ -516,7 +516,7 @@ void estimateSquarePose( float* result, const cv::Point2f* p2D_, float markerSiz
 void estimateSquarePose_( float* mat,  CvPoint2D32f* p2D, float markerSize )
 	{
 	// approximate focal length for logitech quickcam 4000 at 320*240 resolution
-	static const float fFocalLength = 634.0f;
+	static const float fFocalLength = 1340.0f;
 	
 	// compute initial pose
 	float rot[ 4 ], trans[ 3 ];

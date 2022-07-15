@@ -195,7 +195,7 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, vector<Instrument> &vis
 		glRotatef(-90, 0, 0, 1);
 		glRotatef(180, 1, 0, 0);
 		// Scale down!
-		glScalef(0.03, 0.03, 0.03);
+		glScalef(0.05, 0.05, 0.05);
 
 	// Added in Exercise 8 - End *****************************************************************
 
@@ -242,8 +242,9 @@ int main(int argc, char* argv[]) {
 		// --- Orchestra 2 ---
 		instruments.insert(std::make_pair(0x0690, Instrument(0x0690, BASS, "../Sounds/Bass/130_bass_Em_LilTecca-LilMosey-Type-Melody-Part-4.wav")));
 		instruments.insert(std::make_pair(0x005a, Instrument(0x005a, BEAT, "../Sounds/Beat/130_beat_Trap-Drum-130bpm.wav")));
-		// instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, KEYS, "../Sounds/Keys/130_keys_C_Southside-X-Pyrex-Type-Keys-Flute.wav")));
+		instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, KEYS, "../Sounds/Keys/130_keys_Em_Fire-Nylon-Guitar.wav")));
 		instruments.insert(std::make_pair(0x0272, Instrument(0x0272, MELODY, "../Sounds/Melody/130_melody_Em_Piano-YXNG-SXN.wav")));
+		//instruments.insert(std::make_pair(0x0272, Instrument(0x0272, MELODY, "../Sounds/Melody/130_melody_Em_Gunna-Money-Man-BROKEN-By-Danil040.wav")));
 	}
 	
 	

@@ -80,34 +80,22 @@ void Instrument::drawObject(){
 	float r, g, b;
 	switch (role) {
 		case BASS:
-			r = 1;
-			g = 1;
-			b = 1;
+			r = 1; g = 1; b = 1;
 			break;
 		case BEAT:
-			r = 0;
-			g = 1;
-			b = 0;
+			r = 0; g = 1; b = 0;
 			break;
 		case KEYS:
-			r = 0;
-			g = 0.5;
-			b = 0.5;
+			r = 0; g = 0.5; b = 0.5;
 			break;
 		case MELODY:
-			r = 0;
-			g = 0;
-			b = 1;
+			r = 0; g = 0; b = 1;
 			break;
 		case VOCAL:
-			r = 0;
-			g = 1;
-			b = 0;
+			r = 0; g = 1; b = 0;
 			break;
 		default:
-			r = 0;
-			g = 1;
-			b = 1;
+			r = 0; g = 1; b = 1;
 			break;
 	}
 	glColor4f(r, g, b, alpha);
