@@ -230,7 +230,7 @@ void reshape( GLFWwindow* window, int width, int height ) {
 int main(int argc, char* argv[]) {
 
 	// --- Add instrument markers ---
-	bool toggle = true;
+	bool toggle = false;
 
 	if (toggle) {
 		// --- Orchestra 1 ---

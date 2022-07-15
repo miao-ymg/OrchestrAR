@@ -80,9 +80,9 @@ void Instrument::drawObject(){
 	float r, g, b;
 	switch (role) {
 		case BASS:
-			r = 1.0;
-			g = 0.3;
-			b = 0.0;
+			r = 1;
+			g = 1;
+			b = 1;
 			break;
 		case BEAT:
 			r = 0;
@@ -134,6 +134,11 @@ void Instrument::drawObject(){
 		case KEYS:
 			break;
 		case MELODY:
+			drawMusicNote();
+			glTranslatef(0.35, 0, 0.2);
+			drawMusicNote();
+			glTranslatef(-0.7, 0, 0.15);
+			drawMusicNote();
 			break;
 		case VOCAL:
 			glRotatef(15, 1, 0, 0);

@@ -137,3 +137,10 @@ void drawEllipse(float rx, float ry, int num_segments) {
     } 
     glEnd(); 
 }
+
+void drawMusicNote() {
+	glRotatef(-25, 0, 1, 0);
+    drawEllipse(0.14, 0.1, 32);
+    glRotatef(25, 0, 1, 0);
+    drawRectangle(0.1, 0, 0.13, 0.7);
+}
