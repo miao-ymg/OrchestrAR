@@ -17,7 +17,7 @@ enum plane{XY, XZ, YZ};
 std::array<float, 3> paintObject(Pitch pitch) {
     // Sample has no pitch -> Custom color
     if (pitch == 24)
-        return {0.47, 0.25, 0.31};
+        return {0.7, 0.7, 0.7};
 
     float r = 0.5 * (cos(2.0 * M_PI * pitch / 24) + 1);
     float g = 0.5 * (cos(2.0 * M_PI * (pitch - 8) / 24) + 1);
@@ -214,6 +214,7 @@ void drawSpeakerMembrane(GLfloat r) {
  * @param r, g, b Values defining the color code
  */
 void drawSpeaker(GLfloat l, GLfloat w, GLfloat h, GLfloat r, GLfloat g, GLfloat b) {
+    glScalef(1.4, 1.4, 1.4);
     // Draw the box
 	glPushMatrix();
 	drawCuboid(l, w, h, r, g, b);
