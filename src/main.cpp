@@ -236,7 +236,7 @@ void reshape( GLFWwindow* window, int width, int height ) {
 int main(int argc, char* argv[]) {
 
 	// --- Add instrument markers ---
-	bool toggle = true;
+	bool toggle = false;
 
 	if (toggle) {
 		// --- Sound set 1 ---
@@ -245,7 +245,7 @@ int main(int argc, char* argv[]) {
 		instruments.insert(std::make_pair(0x0272, Instrument(0x0272, MELODY, Em, "../Sounds/Melody/130-melody-Em-Piano_YXNG_SXN.wav")));
 		//instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, KEYS, Em, "../Sounds/Keys/130-keys-Em-Duel_Of_The_Fates_I_String_Staccato.wav")));
 		//instruments.insert(std::make_pair(0x0B44, Instrument(0x0B44, MELODY, Em, "../Sounds/Melody/130-melody-Em-Gunna_Money_Man_BROKEN_By_Danil040.wav")));
-		//instruments.insert(std::make_pair(0x1228, Instrument(0x1228, VOCAL, Am, "../Sounds/Vocal/130-vocal-Am-voc.wav")));
+		instruments.insert(std::make_pair(0x1228, Instrument(0x1228, VOCAL, Am, "../Sounds/Vocal/130-vocal-Am-voc.wav")));
 
 	} else {
 		// --- Sound set 2 ---

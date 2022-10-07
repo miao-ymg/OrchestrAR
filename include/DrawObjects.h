@@ -1,5 +1,6 @@
 #include <GLFW/glfw3.h>
 #include <math.h>
+#include <algorithm>
 
 #include "Instrument.h"
 
@@ -13,15 +14,21 @@
 enum plane{XY, XZ, YZ};
 
 
+float colorIntensity(int pitch) {
+    float x = pitch % 24;
+    return (x < 12 ? fmin(1.0/4 * x, 1.0) : fmax(-1.0/4 * x + 4, 0.0));
+}
+
+
 // Paint an object depending on the sample's pitch
 std::array<float, 3> paintObject(Pitch pitch) {
     // Sample has no pitch -> Custom color
     if (pitch == 24)
         return {0.7, 0.7, 0.7};
 
-    float r = 0.5 * (cos(2.0 * M_PI * pitch / 24) + 1);
-    float g = 0.5 * (cos(2.0 * M_PI * (pitch - 8) / 24) + 1);
-    float b = 0.5 * (cos(2.0 * M_PI * (pitch + 8) / 24) + 1);
+    float r = colorIntensity(pitch + 8);
+    float g = colorIntensity(pitch);
+    float b = colorIntensity(pitch - 8);
 
     return {r, g, b};
 }
