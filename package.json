@@ -1,0 +1,15 @@
+{
+  "name": "folddd",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:miao-ymg/OrchestrAR.git",
+  "author": "Sam Miao <miao.ymg@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": ":",
+    "release": "standard-version"
+  },
+  "devDependencies": {
+    "standard-version": "^9.5.0"
+  }
+}

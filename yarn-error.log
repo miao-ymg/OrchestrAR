@@ -1,0 +1,41 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.22.19/libexec/bin/yarn.js start
+
+PATH: 
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib:/usr/local/opt/llvm/bin:/usr/local/bin:/opt/local/bin:/opt/local/sbin:/Library/Frameworks/Python.framework/Versions/3.10/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/sam/.local/bin:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  16.17.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  SyntaxError: /Users/sam/Desktop/folddd/package.json: Unexpected string in JSON at position 190
+      at JSON.parse (<anonymous>)
+      at /usr/local/Cellar/yarn/1.22.19/libexec/lib/cli.js:1629:59
+      at Generator.next (<anonymous>)
+      at step (/usr/local/Cellar/yarn/1.22.19/libexec/lib/cli.js:310:30)
+      at /usr/local/Cellar/yarn/1.22.19/libexec/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "folddd",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "git@github.com:miao-ymg/OrchestrAR.git",
+    "author": "Sam Miao <miao.ymg@gmail.com>",
+    "license": "MIT"
+    "scripts": {
+      "start": "echo"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
