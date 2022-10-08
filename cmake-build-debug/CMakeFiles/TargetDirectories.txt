@@ -1,3 +1,0 @@
-/Users/sam/Desktop/OrchestrAR/cmake-build-debug/CMakeFiles/OrchestrAR.dir
-/Users/sam/Desktop/OrchestrAR/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/sam/Desktop/OrchestrAR/cmake-build-debug/CMakeFiles/rebuild_cache.dir
