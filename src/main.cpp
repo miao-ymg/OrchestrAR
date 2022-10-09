@@ -22,7 +22,6 @@
 #include "PoseEstimation.cpp"
 
 
-
 using namespace cv;
 using namespace std;
 
@@ -49,7 +48,16 @@ int camera_height = 720;
 const int virtual_camera_angle = 30;
 
 // queue<vector<int> > identifierHistory;
-unordered_map<int, Instrument > instruments;
+unordered_map<int, Instrument> instruments;
+
+// --- OWN HELPER FUNCTION(S) ---
+
+// Register a new pair of audio sample & identifier code
+void registerSample(unordered_map<int, Instrument> &instruments, int code, Role r, Pitch p, char* path) {
+	// const char* filePath = ((std::string) "../samples/").append(Instrument::roleToString(r)).append("/").append(file).c_str();
+	instruments.insert(std::make_pair(code, Instrument(code, r, p, path)));
+}
+
 
 
 void initVideoStream(cv::VideoCapture &cap) {
@@ -236,19 +244,19 @@ int main(int argc, char* argv[]) {
 
 	if (toggle) {
 		// --- Sound set 1 ---
-		instruments.insert(std::make_pair(0x005a, Instrument(0x005a, BEAT, None, "../samples/beat/130-beat-N-Trap_Drum_130bpm.wav")));
-		instruments.insert(std::make_pair(0x0690, Instrument(0x0690, BASS, Em, "../samples/bass/130-bass-Em-LilTecca_LilMosey_Type_Melody_Part_4.wav")));
-		instruments.insert(std::make_pair(0x0272, Instrument(0x0272, MELODY, Em, "../samples/melody/130-melody-Em-Piano_YXNG_SXN.wav")));
-		//instruments.insert(std::make_pair(0x1c44, Instrument(0x1c44, KEYS, Em, "../samples/keys/130-keys-Em-Duel_Of_The_Fates_I_String_Staccato.wav")));
-		//instruments.insert(std::make_pair(0x0B44, Instrument(0x0B44, MELODY, Em, "../samples/melody/130-melody-Em-Gunna_Money_Man_BROKEN_By_Danil040.wav")));
-		instruments.insert(std::make_pair(0x1228, Instrument(0x1228, VOCAL, Am, "../samples/vocal/130-vocal-Am-voc.wav")));
+		registerSample(instruments, 0x005a, BEAT, None, "../samples/beat/130-beat-N-Trap_Drum_130bpm.wav");
+		registerSample(instruments, 0x0690, BASS, Em, "../samples/bass/130-bass-Em-LilTecca_LilMosey_Type_Melody_Part_4.wav");
+		registerSample(instruments, 0x0272, MELODY, Em, "../samples/melody/130-melody-Em-Piano_YXNG_SXN.wav");
+		// registerSample(instruments, 0x1c44, KEYS, Em, "../samples/keys/130-keys-Em-Duel_Of_The_Fates_I_String_Staccato.wav");
+		// registerSample(instruments, 0x0B44, MELODY, Em, "../samples/melody/130-melody-Em-Gunna_Money_Man_BROKEN_By_Danil040.wav");
+		registerSample(instruments, 0x1228, VOCAL, Em, "../samples/vocal/130-vocal-Am-voc.wav");
 
 	} else {
 		// --- Sound set 2 ---
-		instruments.insert(std::make_pair(0x005a, Instrument(0x005a, BEAT, None, "../samples/beat/130-beat-N-Trap_Drum_130bpm.wav")));
-		instruments.insert(std::make_pair(0x0690, Instrument(0x0690, BASS, Bm, "../samples/bass/130-bass-Bm-Ridem_Cowgirl_Mid_Bass.wav")));
-		instruments.insert(std::make_pair(0x0272, Instrument(0x0272, MELODY, D, "../samples/melody/130-melody-D-Paris_Emotional_Piano_Loop.wav")));
-		//instruments.insert(std::make_pair(0x1228, Instrument(0x1228, VOCAL, D, "../samples/vocal/130-vocal-D-Emotions.wav")));
+		registerSample(instruments, 0x005a, BEAT, None, "../samples/beat/130-beat-N-Trap_Drum_130bpm.wav");
+		registerSample(instruments, 0x0690, BASS, Bm, "../samples/bass/130-bass-Bm-Ridem_Cowgirl_Mid_Bass.wav");
+		registerSample(instruments, 0x0272, MELODY, D, "../samples/melody/130-melody-D-Paris_Emotional_Piano_Loop.wav");
+		// registerSample(instruments, 0x1228, VOCAL, D, "../samples/vocal/130-vocal-D-Emotions.wav");
 	}
 	
 	

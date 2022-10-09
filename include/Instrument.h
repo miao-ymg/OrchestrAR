@@ -78,6 +78,11 @@ public:
 
     void drawObject();
 
+    /**
+     * Convert a role to a string
+     */
+    static char* roleToString(Role r);
+
 
 protected:
     const int id;

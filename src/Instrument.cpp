@@ -118,3 +118,21 @@ void Instrument::drawObject(){
 void Instrument::freeChunk() {
     Mix_FreeChunk(sample);
 }
+
+
+char* Instrument::roleToString(Role role) {
+	switch (role) {
+		case BASS:
+			return "BASS";
+		case BEAT:
+            return "BEAT";
+		case KEYS:
+			return "KEYS";
+		case MELODY:
+			return "MELODY";
+		case VOCAL:
+            return "VOCAL";
+		default:
+            throw std::invalid_argument("ERROR: Sample role shouldn't exist!");
+	}
+}
