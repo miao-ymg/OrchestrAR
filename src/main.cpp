@@ -50,14 +50,6 @@ const int virtual_camera_angle = 30;
 // queue<vector<int> > identifierHistory;
 unordered_map<int, Instrument> instruments;
 
-// --- OWN HELPER FUNCTION(S) ---
-
-// Register a new pair of audio sample & identifier code
-void registerSample(unordered_map<int, Instrument> &instruments, int code, Role r, Pitch p, char* path) {
-	// const char* filePath = ((std::string) "../samples/").append(Instrument::roleToString(r)).append("/").append(file).c_str();
-	instruments.insert(std::make_pair(code, Instrument(code, r, p, path)));
-}
-
 
 
 void initVideoStream(cv::VideoCapture &cap) {
@@ -237,31 +229,81 @@ void reshape( GLFWwindow* window, int width, int height ) {
 }
 
 
+// --- OWN HELPER FUNCTION(S) ---
+
+// Register a new pair of audio sample & identifier code
+void assignSample(unordered_map<int, Instrument> &instruments, int code, Role r, Pitch p, char* path) {
+    // const char* filePath = ((std::string) "../samples/").append(Instrument::roleToString(r)).append("/").append(file).c_str();
+    instruments.insert(std::make_pair(code, Instrument(code, r, p, path)));
+}
+
+
+void assignSamples() {
+    instruments.clear();
+
+    // --- Add instrument markers ---
+    bool toggle = true;
+
+    if (toggle) {
+        // --- Sound set 1 ---
+        assignSample(instruments, 0x005a, BEAT, None, "../samples/beat/130-beat-N-Trap_Drum_130bpm.wav");
+        assignSample(instruments, 0x0690, BASS, Em, "../samples/bass/130-bass-Em-LilTecca_LilMosey_Type_Melody_Part_4.wav");
+        assignSample(instruments, 0x0272, MELODY, Em, "../samples/melody/130-melody-Em-Piano_YXNG_SXN.wav");
+        // assignSample(instruments, 0x1c44, KEYS, Em, "../samples/keys/130-keys-Em-Duel_Of_The_Fates_I_String_Staccato.wav");
+        // assignSample(instruments, 0x0B44, MELODY, Em, "../samples/melody/130-melody-Em-Gunna_Money_Man_BROKEN_By_Danil040.wav");
+        assignSample(instruments, 0x1228, VOCAL, Em, "../samples/vocal/130-vocal-Am-voc.wav");
+
+    } else {
+        // --- Sound set 2 ---
+        assignSample(instruments, 0x005a, BEAT, None, "../samples/beat/130-beat-N-Trap_Drum_130bpm.wav");
+        assignSample(instruments, 0x0690, BASS, Bm, "../samples/bass/130-bass-Bm-Ridem_Cowgirl_Mid_Bass.wav");
+        assignSample(instruments, 0x0272, MELODY, D, "../samples/melody/130-melody-D-Paris_Emotional_Piano_Loop.wav");
+        // assignSample(instruments, 0x1228, VOCAL, D, "../samples/vocal/130-vocal-D-Emotions.wav");
+    }
+
+    // --- Load sound files ---
+    for (auto& instr : instruments)
+        instr.second.loadSound();
+
+    for (auto& instr : instruments)
+        instr.second.startSound();
+}
+
+
+/**
+ * @brief
+ *
+ * @param window
+ * @param key
+ * @param scancode
+ * @param action
+ * @param mods
+ */
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+        for (auto& instr : instruments) {
+            instr.second.freeChunk();
+        }
+
+        Mix_CloseAudio();
+        SDL_Quit();
+
+        // Important -> Avoid memory leaks!
+        glfwTerminate();
+        exit(0);
+    }
+    /*
+    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
+        Mix_HaltChannel(-1);
+        assignSamples();
+    }
+    */
+}
+
+
+
 int main(int argc, char* argv[]) {
-
-	// --- Add instrument markers ---
-	bool toggle = true;
-
-	if (toggle) {
-		// --- Sound set 1 ---
-		registerSample(instruments, 0x005a, BEAT, None, "../samples/beat/130-beat-N-Trap_Drum_130bpm.wav");
-		registerSample(instruments, 0x0690, BASS, Em, "../samples/bass/130-bass-Em-LilTecca_LilMosey_Type_Melody_Part_4.wav");
-		registerSample(instruments, 0x0272, MELODY, Em, "../samples/melody/130-melody-Em-Piano_YXNG_SXN.wav");
-		// registerSample(instruments, 0x1c44, KEYS, Em, "../samples/keys/130-keys-Em-Duel_Of_The_Fates_I_String_Staccato.wav");
-		// registerSample(instruments, 0x0B44, MELODY, Em, "../samples/melody/130-melody-Em-Gunna_Money_Man_BROKEN_By_Danil040.wav");
-		registerSample(instruments, 0x1228, VOCAL, Em, "../samples/vocal/130-vocal-Am-voc.wav");
-
-	} else {
-		// --- Sound set 2 ---
-		registerSample(instruments, 0x005a, BEAT, None, "../samples/beat/130-beat-N-Trap_Drum_130bpm.wav");
-		registerSample(instruments, 0x0690, BASS, Bm, "../samples/bass/130-bass-Bm-Ridem_Cowgirl_Mid_Bass.wav");
-		registerSample(instruments, 0x0272, MELODY, D, "../samples/melody/130-melody-D-Paris_Emotional_Piano_Loop.wav");
-		// registerSample(instruments, 0x1228, VOCAL, D, "../samples/vocal/130-vocal-D-Emotions.wav");
-	}
-	
-	
-	GLFWwindow* window;
-
 	// Initialize the library
 	if (!glfwInit())
 		return -1;
@@ -276,12 +318,10 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-    // --- Load sound files ---
-    for (auto& instr : instruments)
-        instr.second.loadSound();
+    // Assign audio samples to their corresponding marker encodings
+    assignSamples();
 
-    for (auto& instr : instruments)
-        instr.second.startSound();
+    GLFWwindow* window;
 
 	// const GLFWvidmode* mode = glfwGetVideoMode(NULL);
 	
@@ -322,7 +362,10 @@ int main(int argc, char* argv[]) {
 	MarkerTracker markerTracker(kMarkerSize);
 	
 	float resultMatrix[16];
-	// Loop until the user closes the window
+
+    glfwSetKeyCallback(window, key_callback);
+
+    // Loop until the user closes the window
 	while (!glfwWindowShouldClose(window)) {
 		// Capture here
 		cap >> img_bgr;
