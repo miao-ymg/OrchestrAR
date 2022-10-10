@@ -51,18 +51,17 @@ void Instrument::setVolume(double volume) {
 void Instrument::loadSound() {
     sample = Mix_LoadWAV(soundPath);
 
-	if (sample == NULL)
-		fprintf(stderr, "Unable to load WAV file: %s\n", Mix_GetError());
-
-	channel = Mix_PlayChannel(-1, sample, 0);
-	if (channel == -1)
-		fprintf(stderr, "Unable to play WAV file: %s\n", Mix_GetError());
-
-	Mix_Volume(channel, 0);
+    if (sample == NULL)
+        fprintf(stderr, "Unable to load WAV file: %s\n", Mix_GetError());
 }
 
-void Instrument::loadRandomSound(Role role) {
-	loadSound();
+
+void Instrument::startSound() {
+    channel = Mix_PlayChannel(-1, sample, 0);
+    if (channel == -1)
+        fprintf(stderr, "Unable to play WAV file: %s\n", Mix_GetError());
+
+    Mix_Volume(channel, 0);
 }
 
 void Instrument::toggleSound(vector<int>& identifiers) {

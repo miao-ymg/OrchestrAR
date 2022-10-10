@@ -61,9 +61,9 @@ public:
     void loadSound();
 
     /**
-     * Load random sound file.
+     * Start playing sound file.
      */
-    void loadRandomSound(Role role);
+    void startSound();
 
     /**
      * Play the sound in an endless loop

@@ -276,10 +276,12 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	// --- Load sound files ---
-	for (auto& instr : instruments) {
-		instr.second.loadRandomSound(instr.second.getRole());
-	}
+    // --- Load sound files ---
+    for (auto& instr : instruments)
+        instr.second.loadSound();
+
+    for (auto& instr : instruments)
+        instr.second.startSound();
 
 	// const GLFWvidmode* mode = glfwGetVideoMode(NULL);
 	
