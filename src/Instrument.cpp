@@ -147,25 +147,25 @@ Pitch Instrument::stringToPitch(std::string pitch_str) {
         return Bm;
     if (pitch_str == "D")
         return D;
-    if (pitch_str == "FHm")
+    if (pitch_str == "F#m")
         return FHm;
     if (pitch_str == "A")
         return A;
-    if (pitch_str == "CHm")
+    if (pitch_str == "C#m")
         return CHm;
     if (pitch_str == "E")
         return E;
-    if (pitch_str == "GHm")
+    if (pitch_str == "G#m")
         return GHm;
     if (pitch_str == "B")
         return B;
-    if (pitch_str == "DHm")
+    if (pitch_str == "D#m")
         return DHm;
-    if (pitch_str == "FH")
+    if (pitch_str == "F#")
         return FH;
-    if (pitch_str == "AHm")
+    if (pitch_str == "A#m")
         return AHm;
-    if (pitch_str == "CH")
+    if (pitch_str == "C#")
         return CH;
     if (pitch_str == "Fm")
         return Fm;
