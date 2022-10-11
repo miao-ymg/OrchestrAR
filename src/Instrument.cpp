@@ -119,19 +119,73 @@ void Instrument::freeChunk() {
 }
 
 
-char* Instrument::roleToString(Role role) {
-	switch (role) {
-		case BASS:
-			return "BASS";
-		case BEAT:
-            return "BEAT";
-		case KEYS:
-			return "KEYS";
-		case MELODY:
-			return "MELODY";
-		case VOCAL:
-            return "VOCAL";
-		default:
-            throw std::invalid_argument("ERROR: Sample role shouldn't exist!");
-	}
+Role Instrument::stringToRole(std::string role_str) {
+    // Unfortunately a switch statement can't be used on a string in C++ :(
+    if (role_str == "bass")
+        return BASS;
+    if (role_str == "beat")
+        return BEAT;
+    if (role_str == "keys")
+        return KEYS;
+    if (role_str == "melody")
+        return MELODY;
+    if (role_str == "vocal")
+        return VOCAL;
+    throw std::invalid_argument("ERROR: File name has a wrong format!");
+}
+
+
+Pitch Instrument::stringToPitch(std::string pitch_str) {
+    // Unfortunately a switch statement can't be used on a string in C++ :(
+    if (pitch_str == "C")
+        return C;
+    if (pitch_str == "Em")
+        return Em;
+    if (pitch_str == "G")
+        return G;
+    if (pitch_str == "Bm")
+        return Bm;
+    if (pitch_str == "D")
+        return D;
+    if (pitch_str == "FHm")
+        return FHm;
+    if (pitch_str == "A")
+        return A;
+    if (pitch_str == "CHm")
+        return CHm;
+    if (pitch_str == "E")
+        return E;
+    if (pitch_str == "GHm")
+        return GHm;
+    if (pitch_str == "B")
+        return B;
+    if (pitch_str == "DHm")
+        return DHm;
+    if (pitch_str == "FH")
+        return FH;
+    if (pitch_str == "AHm")
+        return AHm;
+    if (pitch_str == "CH")
+        return CH;
+    if (pitch_str == "Fm")
+        return Fm;
+    if (pitch_str == "Ab")
+        return Ab;
+    if (pitch_str == "Cm")
+        return Cm;
+    if (pitch_str == "Eb")
+        return Eb;
+    if (pitch_str == "Gm")
+        return Gm;
+    if (pitch_str == "Bb")
+        return Bb;
+    if (pitch_str == "Dm")
+        return Dm;
+    if (pitch_str == "F")
+        return F;
+    if (pitch_str == "Am")
+        return Am;
+    if (pitch_str == "N")
+        return None;
+    throw std::invalid_argument("ERROR: File name has a wrong format!");
 }

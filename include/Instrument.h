@@ -79,9 +79,14 @@ public:
     void drawObject();
 
     /**
-     * Convert a role to a string
+     * Map a string to its corresponding Role value
      */
-    static char* roleToString(Role r);
+    static Role stringToRole(std::string role_str);
+
+    /**
+     * Map a string to its corresponding Pitch value
+     */
+    static Pitch stringToPitch(std::string pitch_str);
 
 
 protected:

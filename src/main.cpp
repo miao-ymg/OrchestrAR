@@ -24,6 +24,7 @@
 
 using namespace cv;
 using namespace std;
+using str_pair = std::pair<string, string>;
 
 #define TEST 0
 #define EX5 1
@@ -231,34 +232,71 @@ void reshape( GLFWwindow* window, int width, int height ) {
 
 // --- OWN HELPER FUNCTION(S) ---
 
+str_pair infosFromSample(char* file) {
+    // Pair(Role, Pitch)
+    str_pair properties("","");
+    int hyphen = 0; // Number of hyphens found
+    for (int i = 0; i < 20; i++) {
+        if (file[i] == '-') {
+            if (hyphen == 2)
+                break;
+            hyphen++;
+            i++;
+        }
+        if (hyphen == 1)
+            properties.first += file[i];
+        if (hyphen == 2)
+            properties.second += file[i];
+    }
+    return properties;
+}
+
+char* buildPath(char* &file, string &role) {
+    char* path = (char*) malloc(13 + role.length() + strlen(file));
+    strcpy(path, "../samples/");
+    strcat(path, role.c_str());
+    strcat(path, "/");
+    strcat(path, file);
+    return path;
+}
+
 // Register a new pair of audio sample & identifier code
-void assignSample(unordered_map<int, Instrument> &instruments, int code, Role r, Pitch p, char* path) {
-    // const char* filePath = ((std::string) "../samples/").append(Instrument::roleToString(r)).append("/").append(file).c_str();
-    instruments.insert(std::make_pair(code, Instrument(code, r, p, path)));
+void addSample(int code, char* file) {
+    str_pair properties = infosFromSample(file);
+
+    Role role = Instrument::stringToRole(properties.first);
+    Pitch pitch = Instrument::stringToPitch(properties.second);
+
+    char* path = buildPath(file, properties.first);
+    instruments.insert(std::make_pair(
+            code, Instrument(code, role, pitch, path)));
 }
 
 
-void assignSamples() {
+void addSamples() {
     instruments.clear();
 
     // --- Add instrument markers ---
-    bool toggle = true;
+    int set = 0;
 
-    if (toggle) {
+    if (set == 0) {
         // --- Sound set 1 ---
-        assignSample(instruments, 0x005a, BEAT, None, "../samples/beat/130-beat-N-Trap_Drum_130bpm.wav");
-        assignSample(instruments, 0x0690, BASS, Em, "../samples/bass/130-bass-Em-LilTecca_LilMosey_Type_Melody_Part_4.wav");
-        assignSample(instruments, 0x0272, MELODY, Em, "../samples/melody/130-melody-Em-Piano_YXNG_SXN.wav");
-        // assignSample(instruments, 0x1c44, KEYS, Em, "../samples/keys/130-keys-Em-Duel_Of_The_Fates_I_String_Staccato.wav");
-        // assignSample(instruments, 0x0B44, MELODY, Em, "../samples/melody/130-melody-Em-Gunna_Money_Man_BROKEN_By_Danil040.wav");
-        assignSample(instruments, 0x1228, VOCAL, Em, "../samples/vocal/130-vocal-Am-voc.wav");
+        addSample(0x005a, "130-beat-N-Trap_Drum_130bpm.wav");
+        addSample(0x0690, "130-bass-Em-LilTecca_LilMosey_Type_Melody_Part_4.wav");
+        addSample(0x0272, "130-melody-Em-Piano_YXNG_SXN.wav");
+        // addSample(0x1c44, "130-keys-Em-Duel_Of_The_Fates_I_String_Staccato.wav");
+        // addSample(0x0B44, "130-melody-Em-Gunna_Money_Man_BROKEN_By_Danil040.wav");
+        // addSample(0x1228, "130-vocal-Am-voc.wav");
 
-    } else {
+    } else if (set == 1) {
         // --- Sound set 2 ---
-        assignSample(instruments, 0x005a, BEAT, None, "../samples/beat/130-beat-N-Trap_Drum_130bpm.wav");
-        assignSample(instruments, 0x0690, BASS, Bm, "../samples/bass/130-bass-Bm-Ridem_Cowgirl_Mid_Bass.wav");
-        assignSample(instruments, 0x0272, MELODY, D, "../samples/melody/130-melody-D-Paris_Emotional_Piano_Loop.wav");
-        // assignSample(instruments, 0x1228, VOCAL, D, "../samples/vocal/130-vocal-D-Emotions.wav");
+        addSample(0x005a, "130-beat-N-Trap_Drum_130bpm.wav");
+        addSample(0x0690, "130-bass-Bm-Ridem_Cowgirl_Mid_Bass.wav");
+        addSample(0x0272, "130-melody-D-Paris_Emotional_Piano_Loop.wav");
+        // addSample(0x1228, "130-vocal-D-Emotions.wav");
+    } else {
+        addSample(0x0690, "120-bass-Gm-bass.wav");
+        addSample(0x0272, "120-melody-Gm-melody.wav");
     }
 
     // --- Load sound files ---
@@ -296,7 +334,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     /*
     if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
         Mix_HaltChannel(-1);
-        assignSamples();
+        addSamples();
     }
     */
 }
@@ -319,7 +357,7 @@ int main(int argc, char* argv[]) {
 	}
 
     // Assign audio samples to their corresponding marker encodings
-    assignSamples();
+    addSamples();
 
     GLFWwindow* window;
 
