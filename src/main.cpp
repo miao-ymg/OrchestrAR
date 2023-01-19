@@ -25,6 +25,8 @@
 using namespace cv;
 using namespace std;
 using str_pair = std::pair<string, string>;
+// Instrument KV-pair
+using inst_kvp = unordered_map<int, Instrument>;
 
 #define TEST 0
 #define EX5 1
@@ -49,8 +51,10 @@ int camera_height = 720;
 const int virtual_camera_angle = 30;
 
 // queue<vector<int> > identifierHistory;
-unordered_map<int, Instrument> instruments;
+inst_kvp instruments;
 
+int set = 0;
+int totalSets = 2;
 
 
 void initVideoStream(cv::VideoCapture &cap) {
@@ -276,28 +280,40 @@ void addSample(int code, char* file) {
 void addSamples() {
     instruments.clear();
 
-    // --- Add instrument markers ---
-    int set = 0;
+	switch (set) {
+		case 0:
+			// --- Sound set 1 ---
+			addSample(0x1008, "130-beat-N-Trap_Drum_130bpm.wav");
+			addSample(0x0660, "130-bass-Em-LilTecca_LilMosey_Type_Melody_Part_4.wav");
+			addSample(0x0a50, "130-melody-Em-Piano_YXNG_SXN.wav");
+			// addSample(0x1c44, "130-keys-Em-Duel_Of_The_Fates_I_String_Staccato.wav");
+			// addSample(0x0B44, "130-melody-Em-Gunna_Money_Man_BROKEN_By_Danil040.wav");
+			addSample(0x0690, "130-vocal-Am-voc.wav");
+			
+			// --- Sound set 2 ---
+			// addSample(0x1228, "130-vocal-N-wtf.wav");
+			addSample(0x0bb0, "130-bass-Bm-Ridem_Cowgirl_Mid_Bass.wav");
+			addSample(0x1881, "130-melody-D-Paris_Emotional_Piano_Loop.wav");
+			// addSample(0x1228, "130-vocal-D-Emotions.wav");
 
-    if (set == 0) {
-        // --- Sound set 1 ---
-        addSample(0x005a, "130-beat-N-Trap_Drum_130bpm.wav");
-        addSample(0x0690, "130-bass-Em-LilTecca_LilMosey_Type_Melody_Part_4.wav");
-        addSample(0x0272, "130-melody-Em-Piano_YXNG_SXN.wav");
-        // addSample(0x1c44, "130-keys-Em-Duel_Of_The_Fates_I_String_Staccato.wav");
-        // addSample(0x0B44, "130-melody-Em-Gunna_Money_Man_BROKEN_By_Danil040.wav");
-        // addSample(0x1228, "130-vocal-Am-voc.wav");
+			// --- Sound set 3 ---
+			addSample(0x5a5a, "130-beat-N-layBack.wav");
+			addSample(0x0666, "130-melody-C#m-Obscure_Piano.wav");
+			// addSample(0x005a, "130-keys-N-Run_Away.wav");
+			break;
 
-    } else if (set == 1) {
-        // --- Sound set 2 ---
-        addSample(0x005a, "130-beat-N-Trap_Drum_130bpm.wav");
-        addSample(0x0690, "130-bass-Bm-Ridem_Cowgirl_Mid_Bass.wav");
-        addSample(0x0272, "130-melody-D-Paris_Emotional_Piano_Loop.wav");
-        // addSample(0x1228, "130-vocal-D-Emotions.wav");
-    } else {
-        addSample(0x0690, "120-bass-Gm-bass.wav");
-        addSample(0x0272, "120-melody-Gm-melody.wav");
-    }
+		case 1:
+			// --- Sound set 4 ---
+			addSample(0x6996, "130-beat-N-Theul_Rage_LXITrap.wav");
+			// addSample(0x0272, "130-bass-Bbm-UK_X_NY_Drill.wav");
+			addSample(0x040b, "130-melody-Bbm-Spanish_Guitar_Eclipse.wav");
+			addSample(0x500a, "130-keys-Bbm-Iamroofa.wav");
+			
+			// --- Sound set 5 ---
+			addSample(0x0137, "120-bass-Gm-bass.wav");
+			addSample(0x02c0, "120-melody-Gm-melody.wav");
+			break;
+	}
 
     // --- Load sound files ---
     for (auto& instr : instruments)
@@ -331,12 +347,18 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         glfwTerminate();
         exit(0);
     }
-    /*
-    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
+	
+    if (key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
+		set--;
+		set = (set + totalSets) % totalSets;
         Mix_HaltChannel(-1);
         addSamples();
     }
-    */
+	if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS) {
+		set = (set + 1) % totalSets;
+        Mix_HaltChannel(-1);
+        addSamples();
+    }
 }
 
 

@@ -131,7 +131,7 @@ Role Instrument::stringToRole(std::string role_str) {
         return MELODY;
     if (role_str == "vocal")
         return VOCAL;
-    throw std::invalid_argument("ERROR: File name has a wrong format!");
+    throw std::invalid_argument("ERROR: File name has a wrong format (Role)!");
 }
 
 
@@ -163,8 +163,8 @@ Pitch Instrument::stringToPitch(std::string pitch_str) {
         return DHm;
     if (pitch_str == "F#")
         return FH;
-    if (pitch_str == "A#m")
-        return AHm;
+    if (pitch_str == "Bbm")
+        return Bbm;
     if (pitch_str == "C#")
         return CH;
     if (pitch_str == "Fm")
@@ -187,5 +187,5 @@ Pitch Instrument::stringToPitch(std::string pitch_str) {
         return Am;
     if (pitch_str == "N")
         return None;
-    throw std::invalid_argument("ERROR: File name has a wrong format!");
+    throw std::invalid_argument("ERROR: File name has a wrong format (Pitch)!");
 }

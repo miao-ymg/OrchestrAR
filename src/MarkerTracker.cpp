@@ -493,8 +493,8 @@ void MarkerTracker::findMarker( cv::Mat &img_bgr, float resultMatrix[16], unorde
 			x = resultMatrix[3];
 			y = resultMatrix[7];
 			z = resultMatrix[11];
-			std::cout << "length: " << sqrt(x*x+y*y+z*z) << "\n";
-			std::cout << "\n";
+			// std::cout << "length: " << sqrt(x*x+y*y+z*z) << "\n";
+			// std::cout << "\n";
 		} // end of loop over contours
 
 		

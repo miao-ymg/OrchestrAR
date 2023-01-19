@@ -9,7 +9,7 @@ enum Role { BASS, BEAT, KEYS, MELODY, VOCAL };
 
 enum Pitch {C, Em, G, Bm, D, FHm,
             A, CHm, E, GHm, B, DHm,
-            FH, AHm, CH, Fm, Ab, Cm,
+            FH, Bbm, CH, Fm, Ab, Cm,
             Eb, Gm, Bb, Dm, F, Am,
             None };
 

@@ -24,7 +24,7 @@ float colorIntensity(int pitch) {
 std::array<float, 3> paintObject(Pitch pitch) {
     // Sample has no pitch -> Custom color
     if (pitch == 24)
-        return {0.7, 0.7, 0.7};
+        return {0.75, 0.81, 0.87};
 
     float r = colorIntensity(pitch + 8);
     float g = colorIntensity(pitch);
